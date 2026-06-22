@@ -3,78 +3,89 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>image-prompt-kit — 막연한 요청을 gpt-image-2 완성 프롬프트로</title>
+<title>공냥 프롬프트 킷 — 막연한 한마디를 gpt-image-2 완성 프롬프트로</title>
 <meta name="description" content="거친 한마디를 바로 생성에 넣을 완성 한국어 프롬프트로 컴파일하는 Claude Code 스킬. 네거티브 금지·끝 AR 토큰·결과 기반 서술·검증 스크립트." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%BE%3C/text%3E%3C/svg%3E" />
 <style>
   :root{
-    --bg:#0a0e1a; --panel:#111726; --line:#1e2740; --ink:#e8edf7;
-    --dim:#8a97b5; --cyan:#37e0d8; --gold:#f0c674; --rose:#f07a8c;
+    --bg:#0b0d12; --panel:#13161f; --panel2:#171b26; --line:#242938; --ink:#eef1f7;
+    --dim:#8b93a7; --mint:#5eead4; --gold:#f4cf7a; --rose:#f48fa0;
     --mono:ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace;
     --sans:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;
+    --r:16px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased}
-  a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
-  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
-  code{font-family:var(--mono);font-size:.92em}
-  nav{position:sticky;top:0;z-index:20;background:rgba(10,14,26,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
-  .brand{font-family:var(--mono);font-weight:700;font-size:1.05rem}.brand b{color:var(--cyan)}
-  .nav-links{display:flex;gap:22px;font-size:.9rem}.nav-links a{color:var(--dim)}.nav-links a:hover{color:var(--ink);text-decoration:none}
-  header{padding:76px 0 40px;text-align:center;border-bottom:1px solid var(--line)}
-  .eyebrow{font-family:var(--mono);color:var(--cyan);font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px}
-  h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.12}
-  h1 .grad{background:linear-gradient(100deg,var(--cyan),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .sub{max-width:620px;margin:22px auto 0;color:var(--dim);font-size:1.1rem}
-  .cta{display:flex;gap:14px;justify-content:center;margin-top:30px;flex-wrap:wrap}
-  .btn{font-family:var(--mono);font-size:.9rem;padding:12px 22px;border-radius:10px;border:1px solid var(--line);transition:.15s}
-  .btn.primary{background:var(--cyan);color:#05221f;border-color:var(--cyan);font-weight:700}
-  .btn.primary:hover{filter:brightness(1.08);text-decoration:none}
-  .btn.ghost{color:var(--ink)}.btn.ghost:hover{border-color:var(--cyan);text-decoration:none}
-  /* compile visual */
-  .compile{padding:48px 0 56px;border-bottom:1px solid var(--line)}
-  .flow{display:grid;grid-template-columns:1fr auto 1.4fr;gap:18px;align-items:center}
-  @media(max-width:760px){.flow{grid-template-columns:1fr;gap:14px}.arrow{transform:rotate(90deg);justify-self:center}}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
-  .card .tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
-  .rough{font-size:1.15rem;color:var(--ink)}
-  .prod{font-family:var(--mono);font-size:.82rem;line-height:1.7;color:#cdd6ee;white-space:pre-wrap}
-  .prod b{color:var(--cyan);font-weight:600}.prod .ar{color:var(--gold)}
-  .arrow{font-family:var(--mono);color:var(--cyan);font-size:1.6rem;text-align:center}
-  section{padding:56px 0;border-bottom:1px solid var(--line)}
-  h2{font-size:1.6rem;letter-spacing:-.02em;margin-bottom:8px}
-  .lead{color:var(--dim);margin-bottom:28px;max-width:680px}
-  .rules{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  body{background:
+    radial-gradient(900px 500px at 80% -10%,rgba(94,234,212,.07),transparent 60%),
+    radial-gradient(700px 400px at 0% 10%,rgba(244,207,122,.05),transparent 55%),var(--bg);
+    color:var(--ink);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:var(--mint);text-decoration:none}a:hover{opacity:.85}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px}
+  code{font-family:var(--mono);font-size:.9em;background:rgba(255,255,255,.05);padding:1px 5px;border-radius:5px}
+  nav{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.78);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{font-weight:800;font-size:1.08rem;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+  .brand .paw{font-size:1.1rem}
+  .nav-links{display:flex;gap:22px;font-size:.9rem}
+  .nav-links a{color:var(--dim)}.nav-links a:hover{color:var(--ink);opacity:1}
+  header{padding:84px 0 48px;text-align:center}
+  .pill-top{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.76rem;
+    color:var(--mint);border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 14px;margin-bottom:24px}
+  h1{font-size:clamp(2.2rem,5.6vw,3.6rem);font-weight:850;letter-spacing:-.035em;line-height:1.08}
+  h1 .grad{background:linear-gradient(100deg,var(--mint),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{max-width:600px;margin:24px auto 0;color:var(--dim);font-size:1.13rem}
+  .cta{display:flex;gap:12px;justify-content:center;margin-top:34px;flex-wrap:wrap}
+  .btn{font-family:var(--mono);font-size:.9rem;padding:12px 22px;border-radius:11px;border:1px solid var(--line);transition:.15s;background:var(--panel)}
+  .btn.primary{background:linear-gradient(100deg,var(--mint),#8af0dd);color:#052a24;border-color:transparent;font-weight:800}
+  .btn.primary:hover{filter:brightness(1.06);opacity:1}
+  .btn.ghost{color:var(--ink)}.btn.ghost:hover{border-color:var(--mint);opacity:1}
+  .compile{padding:8px 0 64px}
+  .flow{display:grid;grid-template-columns:1fr auto 1.45fr;gap:16px;align-items:stretch}
+  @media(max-width:780px){.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg);justify-self:center;padding:2px 0}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;box-shadow:0 20px 50px -30px rgba(0,0,0,.8)}
+  .card .tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+  .rough{font-size:1.18rem;color:var(--ink);display:flex;align-items:center;min-height:64px}
+  .prod{font-family:var(--mono);font-size:.8rem;line-height:1.75;color:#ccd4e6;white-space:pre-wrap}
+  .prod b{color:var(--mint);font-weight:600}.prod .ar{color:var(--gold)}
+  .arrow{display:flex;align-items:center;justify-content:center;font-family:var(--mono);color:var(--mint);font-size:1.5rem}
+  section{padding:60px 0;border-top:1px solid var(--line)}
+  h2{font-size:1.65rem;letter-spacing:-.02em;margin-bottom:8px}
+  .lead{color:var(--dim);margin-bottom:30px;max-width:680px}
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media(max-width:720px){.rules{grid-template-columns:1fr}}
-  .rule{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--cyan);border-radius:10px;padding:16px 18px}
-  .rule b{font-family:var(--mono);font-size:.92rem;color:var(--cyan)}
-  .rule.no{border-left-color:var(--rose)}.rule.no b{color:var(--rose)}
-  .rule span{color:var(--dim);font-size:.94rem;display:block;margin-top:5px}
-  pre{background:#0c1322;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:.84rem;line-height:1.7;color:#cdd6ee}
-  pre .c{color:var(--dim)}.pre-ok{color:var(--cyan)}.pre-x{color:var(--rose)}
-  .cats{display:flex;flex-wrap:wrap;gap:8px}
-  .cat{font-family:var(--mono);font-size:.82rem;background:#0c1322;border:1px solid var(--line);border-radius:999px;padding:6px 13px;color:var(--dim)}
-  .cat b{color:var(--ink);font-weight:600}
-  footer{padding:46px 0 64px;text-align:center;color:var(--dim);font-size:.9rem}
-  footer .brand{display:block;margin-bottom:10px}
+  .rule{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:18px 20px;position:relative;overflow:hidden}
+  .rule::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--mint)}
+  .rule.no::before{background:var(--rose)}
+  .rule b{font-family:var(--mono);font-size:.92rem;color:var(--mint)}
+  .rule.no b{color:var(--rose)}
+  .rule span{color:var(--dim);font-size:.93rem;display:block;margin-top:6px}
+  pre{background:var(--panel2);border:1px solid var(--line);border-radius:13px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:.83rem;line-height:1.75;color:#ccd4e6}
+  pre .c{color:var(--dim)}.pre-ok{color:var(--mint)}.pre-x{color:var(--rose)}
+  .cats{display:flex;flex-wrap:wrap;gap:9px}
+  .cat{font-family:var(--mono);font-size:.82rem;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 14px;color:var(--dim);transition:.15s}
+  .cat:hover{border-color:var(--mint);color:var(--ink)}
+  .cat b{color:var(--ink);font-weight:700}
+  .install code{display:block;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:14px 18px;color:#ccd4e6;font-size:.86rem}
+  footer{padding:48px 0 70px;text-align:center;color:var(--dim);font-size:.9rem;border-top:1px solid var(--line)}
+  footer .brand{display:inline-flex;margin-bottom:12px;color:var(--ink)}
 </style>
 </head>
 <body>
 <nav><div class="wrap">
-  <span class="brand">image<b>·</b>prompt<b>·</b>kit</span>
+  <span class="brand"><span class="paw">🐾</span> 공냥 프롬프트 킷</span>
   <span class="nav-links">
     <a href="#rules">규칙</a><a href="#check">검증기</a><a href="#cats">카테고리</a>
-    <a href="https://github.com/kimsh-1/image-prompt-kit">GitHub</a>
+    <a href="https://github.com/kimsh-1/gongnyang-prompt-kit">GitHub</a>
   </span>
 </div></nav>
 
 <header><div class="wrap">
-  <div class="eyebrow">Claude Code Skill · gpt-image-2</div>
+  <span class="pill-top">🐾 Claude Code Skill · gpt-image-2</span>
   <h1>막연한 한마디를<br><span class="grad">완성 프롬프트로</span></h1>
-  <p class="sub">"포스터 하나 만들어줘"를, 바로 생성에 넣을 완성 한국어 프로덕션 프롬프트로 컴파일한다. 1,000장을 뽑으며 정립한 규칙을 한 스킬로.</p>
+  <p class="sub">"포스터 하나 만들어줘"를, 바로 생성에 넣을 완성 한국어 프로덕션 프롬프트로 컴파일한다. 1,000장을 뽑으며 다듬은 규칙을 한 스킬로.</p>
   <div class="cta">
-    <a class="btn primary" href="https://github.com/kimsh-1/image-prompt-kit">GitHub에서 보기 →</a>
+    <a class="btn primary" href="https://github.com/kimsh-1/gongnyang-prompt-kit">GitHub에서 보기 →</a>
     <a class="btn ghost" href="#rules">핵심 규칙</a>
   </div>
 </div></header>
@@ -82,12 +93,12 @@
 <div class="compile"><div class="wrap">
   <div class="flow">
     <div class="card">
-      <div class="tag">거친 요청</div>
+      <div class="tag">🐾 거친 요청</div>
       <div class="rough">"봄밤 야시장 포스터 하나 만들어줘"</div>
     </div>
     <div class="arrow">→</div>
     <div class="card">
-      <div class="tag">완성 프롬프트 (C3 한국어 포스터)</div>
+      <div class="tag">완성 프롬프트 · C3 한국어 포스터</div>
 <div class="prod"><b>Scene:</b> 상단 1/3 굵은 세리프 타이틀, 중앙 달·야시장 일러스트, 하단 카피 여백.
 <b>Lighting:</b> 부드러운 소프트박스 균등광, 옅은 콘택트 섀도.
 <b>Color:</b> #0F1D30 · #F7F4EC · #B76E79.
@@ -104,14 +115,14 @@
     <div class="rule no"><b>네거티브 안 씀</b><span>gpt-image-2는 <code>no watermark</code> 같은 부정문을 오히려 그 단어로 렌더한다. "브랜드 없는 클린 마감"처럼 전부 긍정형으로.</span></div>
     <div class="rule no"><b>앞 브래킷 안 씀</b><span><code>[AR x:y SIZE]</code> 금지. size는 API 파라미터, 프롬프트엔 끝에 <code>AR x:y</code> 토큰만.</span></div>
     <div class="rule"><b>장비 → 결과로</b><span>모델은 <code>Canon R5 f/1.4</code>를 모른다. "shallow DoF, background falls off softly"로 쓴다.</span></div>
-    <div class="rule no"><b>SD 태그 버림</b><span><code>masterpiece, 8k, ultra-detailed</code>는 노이즈. 빈 형용사도 금지.</span></div>
+    <div class="rule no"><b>SD 태그 버림</b><span><code>masterpiece · 8k · ultra-detailed</code>는 노이즈. 빈 형용사도 금지.</span></div>
     <div class="rule"><b>수치는 박는다</b><span>HEX 팔레트, 켈빈, <code>key:fill 1:2</code> 비율 → 품질↑.</span></div>
     <div class="rule"><b>1행 = 1컷 = 1 호출</b><span>한 캔버스에 그리드로 여러 컷 그리지 않는다. 여러 컷은 별도 행으로.</span></div>
   </div>
 </div></section>
 
 <section id="check"><div class="wrap">
-  <h2>검증기 내장</h2>
+  <h2>검증기 내장 🐾</h2>
   <p class="lead">작성한 프롬프트가 규칙을 지켰는지 자동으로 검사한다. 위반은 <code>error</code>, 권고는 <code>warning</code>.</p>
   <pre><span class="c"># 통과</span>
 $ node scripts/check_prompt.mjs examples/poster.txt
@@ -134,9 +145,16 @@ $ node scripts/check_prompt.mjs examples/bad_poster.txt
   </div>
 </div></section>
 
+<section class="install"><div class="wrap">
+  <h2>설치</h2>
+  <p class="lead">Claude Code 개인 스킬로 심볼릭 링크 한 줄.</p>
+  <code>ln -s "$PWD/skills/image-prompt" ~/.claude/skills/image-prompt</code>
+  <p class="lead" style="margin-top:18px">이후 "이미지 프롬프트 써줘", "공냥 프롬프트", "포스터/카드뉴스/만화 프롬프트" 트리거나 <code>/image-prompt</code>로 작동. 실제 생성·양산은 <a href="https://github.com/kimsh-1/codex-fleet">codex-fleet</a>.</p>
+</div></section>
+
 <footer><div class="wrap">
-  <span class="brand">image<b style="color:var(--cyan)">·</b>prompt<b style="color:var(--cyan)">·</b>kit</span>
-  MIT License · <a href="https://github.com/kimsh-1/image-prompt-kit">github.com/kimsh-1/image-prompt-kit</a> · 생성은 <a href="https://github.com/kimsh-1/codex-fleet">codex-fleet</a>
+  <span class="brand"><span class="paw">🐾</span> 공냥 프롬프트 킷</span><br>
+  MIT License · <a href="https://github.com/kimsh-1/gongnyang-prompt-kit">github.com/kimsh-1/gongnyang-prompt-kit</a>
 </div></footer>
 </body>
 </html>
