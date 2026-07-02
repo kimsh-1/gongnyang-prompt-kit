@@ -122,22 +122,50 @@
 
 ### T1 움직임 번역
 대상을 그리지 않고 **움직임의 성질만** 글자에 싣는다. 절차: 대상 선정(움직임이 명확할수록 좋다) → 리듬/속도 추출 → 궤적/힘 분해 → 글자 성질로 번역.
-- 예: 토끼의 '깡총'(도약 궤적, 착지 압축) · 발레의 리듬(연속 곡선) · 파도(밀려드는 가속) · 고양이 착지(정지 직전의 탄성)
+- 대상 예: **파도**(밀려와 정점에서 부서지는 가속) · **심장박동**(수축-이완의 반복 리듬) · **빗방울**(수직 낙하 후 튀는 파문) · **고양이 착지**(정지 직전의 탄성)
 - 드롭인 골격: `letterforms carrying the {rhythm and trajectory} of {motion} — the subject itself never drawn, only its energy in the strokes`
+- **완성 예 — "파도"**:
+  ```
+  Text-in-image: headline "파도" — letterforms carrying the surge of an incoming wave:
+  strokes swelling thicker as they rise, crests breaking into fine spray at the stroke tips,
+  baseline rolling like a swell, the wave itself never drawn — only its energy in the letters.
+  Deep sea ink #1D4E89 on foam-white field #F5F8FA, all text perfectly legible.
+  ```
 
 ### T2 의성어·의태어 번역
 '쿵쾅쿵쾅·사르르·또로롱' 같은 소리의 결을 글자 형태로. **감정·장면을 더하면 결이 달라진다**: '또로롱'보다 '이별의 눈물이 또로롱'이 다른 글자를 만든다.
 - 드롭인 골격: `letterforms shaped by the texture of the sound "{의성어}" felt through {감정/장면}, weight and edges following the sound`
+- **완성 예 — "사르르"(버터가 녹는)**:
+  ```
+  Text-in-image: headline "사르르" — letterforms melting like butter on a warm pan:
+  edges softening and gently drooping, the last syllable dissolving into a thin glossy pool
+  beneath the baseline, weight thinning from first glyph to last.
+  Warm butter yellow #F2B705 on cream field #FFF9F2.
+  ```
 
 ### T3 의도 왜곡
 힙·키치 요청에 "볼드하고 눈에 띄게"를 주면 어디서 본 두꺼운 글씨만 나온다. 대신 **왜곡 방향을 먼저 설계하고 그 방향으로만** 일그러뜨린다(로봇방지문자처럼 — 전부 망가뜨리는 게 아니라 의도된 왜곡).
 - 절차: ① 왜곡 방향 후보 나열(늘림·압축·절단·겹침·용해 등) ② 1개 선택해 어디를 어떻게 왜곡할지 설계 ③ 가독 한계선 명시
 - 드롭인 골격: `deliberately distorted lettering — {선택한 왜곡} applied with intent, distortion stopping just before legibility breaks`
+- **완성 예 — "야시장"(절단+오프셋)**:
+  ```
+  Text-in-image: headline "야시장" — deliberately distorted lettering: each glyph sliced
+  horizontally at its waist, the upper half shifted slightly right like a mis-registered print,
+  distortion stopping just before legibility breaks.
+  Hot pink #F25C9B strokes with an electric mint #5EEAD4 offset layer on near-black #0B0D12.
+  ```
 
 ### T4 네거티브 스페이스
 글자 속 여백(카운터스페이스)에 상징을 **살짝 숨긴다** — 대놓고 그리면 죽는다. 두 번째 봤을 때 발견되는 게 목표.
 - 효과 좋은 글자: 영문 `o c q d e a h` · 한글 `ㅇ ㅎ ㅁ ㅂ ㅅ ㄷ` (구조가 뚜렷하고 여백이 넓은 문자)
 - 드롭인 골격: `a {상징} subtly hidden in the counterspace of the letter {글자}, invisible at first glance, discovered on the second`
+- **완성 예 — "소풍"(ㅇ 속의 연)**:
+  ```
+  Text-in-image: wordmark "소풍" — a tiny kite silhouette subtly hidden inside the round
+  counterspace of "ㅇ", invisible at first glance, discovered on the second look;
+  every other stroke kept clean and geometric.
+  Single ink #111111 on warm paper field #F5F1E8.
+  ```
 
 ## 컨셉 프리플라이트 (컴파일 전 짧은 루프)
 
