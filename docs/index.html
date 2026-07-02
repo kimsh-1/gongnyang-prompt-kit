@@ -78,6 +78,10 @@
   .prompt-rev{margin-top:14px;border:1px solid var(--line);border-radius:12px;padding:12px 18px;background:rgba(255,255,255,.02)}
   .prompt-rev summary{cursor:pointer;color:var(--mint);font-weight:700;font-size:14px}
   .prompt-rev pre{white-space:pre-wrap;word-break:break-all;font-size:12.5px;line-height:1.7;color:#c8cede;margin:12px 0 2px}
+  .vs-title{margin:34px 0 6px;font-size:20px}
+  .vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+  .vs-grid img{display:block;width:100%;border-radius:12px;border:1px solid var(--line)}
+  @media(max-width:640px){.vs-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -148,6 +152,22 @@
     <img src="showcase/SC24.webp" alt="빗자루 — M10 와비사비" loading="lazy" />
     <img src="showcase/SC25.webp" alt="소풍 로고 — T4 네거티브 스페이스" loading="lazy" />
   </div>
+  <h3 class="vs-title">스킬 전후 — 같은 요청, 같은 모델</h3>
+  <p class="lead">왼쪽은 사람이 친 한 줄 그대로, 오른쪽은 그 한 줄을 킷이 컴파일한 프롬프트다. 하단 칩에 실제 입력이 적혀 있다.</p>
+  <div class="vs-grid">
+    <img src="showcase/SC26B.webp" alt="스킬 없이 — 파도 타이포그래피 포스터" loading="lazy" />
+    <img src="showcase/SC26.webp" alt="킷 컴파일 — 파도, T1 움직임 번역" loading="lazy" />
+    <img src="showcase/SC27B.webp" alt="스킬 없이 — 야시장 타이포그래피 포스터" loading="lazy" />
+    <img src="showcase/SC27.webp" alt="킷 컴파일 — 야시장, T3 의도 왜곡" loading="lazy" />
+  </div>
+  <details class="prompt-rev">
+    <summary>"파도 타이포" → 킷이 컴파일한 전체 프롬프트 (SC26 · T1 움직임 번역)</summary>
+    <pre>타이포그래피 아트 포스터 — 파도의 에너지를 실은 한글 레터링이 유일한 피사체. Scene: 옅은 포말빛 필드 전면을 거대한 한글 레터링 '파도'가 채우는 구성. letterforms carrying the surge of a breaking wave: thick brush strokes swelling and curling upward with momentum, stroke tips bursting into fine white spray droplets, the baseline rolling like a swell, deep-sea ink gradating to foam white inside each stroke — the lettering is the only subject in the frame, all of the wave's energy living inside the strokes. Camera: 정면 평면 포스터 구성, 레터링이 프레임의 80%를 차지하는 과감한 스케일. Lighting: 균일한 인쇄 광, 획 안쪽에만 깊이감 있는 톤 변화. Color grading: deep sea ink #1D4E89, midnight undertone #101A2E, foam white #F5F8FA, 시안 스프레이 포인트 #5EEAD4. Texture/Medium: 두꺼운 스크린프린트 잉크 질감, 획 가장자리의 미세한 물보라 입자. Text-in-image: headline "파도" 화면 중앙(초대형 브러시 한글 레터링, 딥블루). All text appears once, perfectly legible — no duplicate text, no extra words, no invented glyphs, no watermark. AR 4:5</pre>
+  </details>
+  <details class="prompt-rev">
+    <summary>"야시장 타이포" → 킷이 컴파일한 전체 프롬프트 (SC27 · T3 의도 왜곡)</summary>
+    <pre>키치 네온 타이포그래피 포스터 — 의도적으로 왜곡된 한글 레터링이 주인공. Scene: 순흑에 가까운 밤 필드 중앙에 대형 한글 레터링 '야시장' — deliberately distorted lettering: each glyph sliced horizontally at its waist, the upper half shifted sideways like a mis-registered screen print, strokes stretched tall and slightly wobbling as if seen through hot night air, distortion stopping just before legibility breaks. 글자 주변에 네온 사인의 옅은 글로우와 작은 전구 점들이 흩어진 야시장 무드. Camera: 정면 평면 포스터 구성, 레터링이 프레임 70%를 차지. Lighting: 네온 글로우가 글자 획에서 배어나오는 self-lit lettering, 배경은 딥 섀도. Color grading: hot pink neon #F25C9B, electric mint offset layer #5EEAD4, warm bulb amber #F2B705, near-black night field #0B0D12. Texture/Medium: 네온 튜브의 유리 광택과 미세한 헤이즈, 스크린프린트 오프셋의 어긋난 잉크 레이어. Text-in-image: headline "야시장" 중앙(초대형 절단·오프셋 한글 레터링, 핑크+민트 이중 레이어). All text appears once, perfectly legible — no duplicate text, no extra words, no invented glyphs, no watermark. AR 4:5</pre>
+  </details>
   <details class="prompt-rev">
     <summary>"사르르 포스터" → 킷이 컴파일한 전체 프롬프트 (SC21 · T2 의성어)</summary>
     <pre>디저트 카페 포스터 — 녹아내리는 한글 타이포그래피가 주인공. Scene: 크림색 필드 상단 2/3를 커다란 한글 레터링 '사르르'가 차지하고, 하단에 따뜻한 팬 위 버터 한 조각이 작게 놓인 구성. letterforms melting like butter on a warm pan: edges softening and gently drooping, the last syllable dissolving into a thin glossy pool beneath the baseline, weight thinning from first glyph to last. Camera: 정면 평면 그래픽 구성, 중앙 정렬, 포스터 풀블리드. Lighting: soft even studio glow, 균일하고 부드러운 인쇄 광. Color grading: warm butter yellow #F2B705, cream field #FFF9F2, toasted brown accent #B8722C. Texture/Medium: matte print finish with subtle paper grain, glossy highlights kept to the melted pool. Text-in-image: headline "사르르" 상단 중앙(두툼한 라운드 한글 레터링, 버터 옐로). All text appears once, perfectly legible — no duplicate text, no extra words, no invented glyphs, no watermark. AR 4:5</pre>
@@ -196,7 +216,6 @@ $ node scripts/check_prompt.mjs --test   <span class="pre-ok">14/14 fixtures gre
 <section id="cats"><div class="wrap">
   <h2>카테고리 C1~C12</h2>
   <p class="lead">컷타입·기본 AR·필수 디테일은 <code>references/category-patterns.md</code>에 있다. VOL.2에서 시네마틱 키아트(C11)·프레젠테이션 덱(C12)·룩 프리셋 8종·컨셉 변수 축(미학 사조 10종 <b>M1~M10</b>·몸 반응 번역·모순쌍 레이어·타이포 아트)이 추가됐다.</p>
-  <img class="demo-gif" src="typo-art.svg" alt="타이포 아트 4기법 — T1 움직임 번역 · T2 의성어 번역 · T3 의도 왜곡 · T4 네거티브 스페이스" loading="lazy" />
   <div class="cats">
     <span class="cat"><b>C1</b> 패션/화보</span><span class="cat"><b>C2</b> 뷰티</span>
     <span class="cat"><b>C3</b> 한국어 포스터</span><span class="cat"><b>C4</b> 제품 도감</span>

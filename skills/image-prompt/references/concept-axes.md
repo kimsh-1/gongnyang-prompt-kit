@@ -123,12 +123,13 @@
 ### T1 움직임 번역
 대상을 그리지 않고 **움직임의 성질만** 글자에 싣는다. 절차: 대상 선정(움직임이 명확할수록 좋다) → 리듬/속도 추출 → 궤적/힘 분해 → 글자 성질로 번역.
 - 대상 예: **파도**(밀려와 정점에서 부서지는 가속) · **심장박동**(수축-이완의 반복 리듬) · **빗방울**(수직 낙하 후 튀는 파문) · **고양이 착지**(정지 직전의 탄성)
-- 드롭인 골격: `letterforms carrying the {rhythm and trajectory} of {motion} — the subject itself never drawn, only its energy in the strokes`
+- 드롭인 골격: `letterforms carrying the {rhythm and trajectory} of {motion} — the lettering as the only subject in the frame, the motion's energy living entirely in the strokes` (※ "never drawn" 같은 부정문은 철칙 #2 위반 — 검증기 실측으로 잡힘)
 - **완성 예 — "파도"**:
   ```
   Text-in-image: headline "파도" — letterforms carrying the surge of an incoming wave:
   strokes swelling thicker as they rise, crests breaking into fine spray at the stroke tips,
-  baseline rolling like a swell, the wave itself never drawn — only its energy in the letters.
+  baseline rolling like a swell — the lettering as the only subject in the frame, all of the
+  wave's energy living inside the strokes.
   Deep sea ink #1D4E89 on foam-white field #F5F8FA, all text perfectly legible.
   ```
 
