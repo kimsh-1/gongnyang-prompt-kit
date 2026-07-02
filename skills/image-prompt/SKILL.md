@@ -1,7 +1,7 @@
 ---
 name: image-prompt
-version: "1.1.0"
-description: 막연한 요청을 gpt-image-2(Codex `$imagegen`) 완성 프롬프트로 컴파일하는 스킬. 사용자의 검증된 규칙 — 네거티브 금지·전부 긍정형, 앞 브래킷 금지·끝 AR 토큰만, 장비는 결과로 환원, HEX 명시, 1행=1컷, 사이즈락 6종, C1~C10 플레이북, jsonl 스키마, 검증 스크립트. 트리거 — "공냥 프롬프트", "공냥 프롬프트 킷", "이미지 스킬", "공냥이미지스킬", "그냥 이미지 스킬", "gn-image", "gpt-image-2 프롬프트", "이미지 프롬프트 써줘", "프롬프트 라이브러리", "화보/포스터/카드뉴스/제품도감/만화 프롬프트", "프롬프트 jsonl 만들어", "프롬프트 컴파일". 후속 — "이 컷만 변형", "스타일 바꿔", "사이즈 맞춰", "한글 카피 넣어" 도 이 스킬. ※ 실제 대량 생성·스폰은 [codex-imagegen]. 이 스킬은 "프롬프트를 어떻게 쓰느냐".
+version: "2.0.0"
+description: 막연한 요청을 gpt-image-2(Codex `$imagegen`) 완성 프롬프트로 컴파일하는 스킬. 검증된 규칙 — 티어드 네거티브(기본 전부 긍정형+극소수 화이트리스트 2종), 앞 브래킷 금지·끝 AR 토큰만, 장비는 결과로 환원, HEX 명시, 1행=1컷, 사이즈락 6종, C1~C11 플레이북, 화보 Format B(플랫 콤마형), 시네마틱 키아트(C11), 타이포/글자배치(영역·롤라벨·그리드), jsonl 스키마, 검증 스크립트. 트리거 — "공냥 프롬프트", "공냥 프롬프트 킷", "이미지 스킬", "공냥이미지스킬", "gn-image", "gpt-image-2 프롬프트", "이미지 프롬프트 써줘", "화보 프롬프트", "키아트", "글자 배치", "타이포 지정", "프롬프트 라이브러리", "포스터/카드뉴스/제품도감/만화 프롬프트", "프롬프트 jsonl 만들어", "프롬프트 컴파일". 후속 — "이 컷만 변형", "스타일 바꿔", "사이즈 맞춰", "한글 카피 넣어" 도 이 스킬. ※ 실제 대량 생성·스폰은 [codex-imagegen]. 이 스킬은 "프롬프트를 어떻게 쓰느냐".
 ---
 
 # 🐾 공냥 프롬프트 킷 — gpt-image-2 프롬프트 컴파일러
@@ -11,19 +11,36 @@ description: 막연한 요청을 gpt-image-2(Codex `$imagegen`) 완성 프롬프
 ## 워크플로우
 
 1. 거친 요청에서 빠진 결정(카테고리·컷타입·피사체·스타일·구도·텍스트·AR)을 **추론해 채운다**. 취향 디테일은 묻지 말고 결정. **묻는 건** 정확한 한글 문구·브랜드명·민감 소재 정도.
-2. 카테고리/컷타입이 잡히면 `references/category-patterns.md`(C1~C10)를 본다.
-3. 아래 **철칙**을 지켜 6섹션으로 작성, 끝에 `AR` 토큰.
+2. 카테고리/컷타입이 잡히면 `references/category-patterns.md`(C1~C11)를 본다. 포맷 라우팅(아래 §포맷 A/포맷 B)으로 A/B를 정한다.
+3. 아래 **철칙**을 지켜 작성, 끝에 `AR` 토큰.
 4. 고가치 산출물은 응답 전 `node scripts/check_prompt.mjs <file>`로 검증(`ok:true` 확인).
 5. 생성으로 이어지면 **컴파일된 프롬프트만** 넘긴다(거친 원문은 안 넘김).
 
-**거친 입력 확장 예:** "포스터 하나"→`C3`(타이틀 위계·여백·팔레트·AR), "귀여운 아이콘"→`C9`(오브젝트·재질·베벨·배경, "텍스트 없음"), "제품 소개"→`C4`(히어로·콜아웃·리더선), "만화 느낌"→`C10`(패널·거터·말풍선·선화).
+**거친 입력 확장 예:** "포스터 하나"→`C3`(타이틀 위계·여백·팔레트·AR), "화보 한 장"→`C1` 포맷 B(단독 인물 플랫 단문), "드라마 키아트"→`C11`(타이틀 negative space·장르 광 레시피), "귀여운 아이콘"→`C9`(오브젝트·재질·베벨·배경, "텍스트 없음"), "제품 소개"→`C4`(히어로·콜아웃·리더선), "만화 느낌"→`C10`(패널·거터·말풍선·선화).
 
 **출력 계약:** 단일 요청 → 본문 + 끝 `AR x:y`만(설명 없이). 다중 → 엔트리당 `Title / Category(Cn) / Cut type / Prompt`. 생성 요청 → 조용히 컴파일 후 이미지 툴 호출.
 
 ## 철칙 — 절대 어기지 말 것
 
-1. **앞머리 `[AR x:y SIZE wxh]` 브래킷 금지.** size는 API 파라미터(jsonl `size`)로만. 프롬프트엔 **끝에 `AR x:y` 토큰 하나만**.
-2. **네거티브 일절 금지 — 예외 없음.** `Negative:` 섹션도, 영어 `no ~`/`without ~` 부정문도 **0개**. gpt-image-2는 네거티브 단어를 오히려 렌더한다. 빼고 싶은 건 전부 **긍정형**으로 — 군중→"프레임 안엔 인물 한 명, 단독", 배경→"깨끗한 단색 배경", 워터마크→"브랜드 없는 클린 마감". 만화·뷰티·패션 동일, 구멍 없음.
+1. **앞머리 `[AR x:y SIZE wxh]` 브래킷 금지.** size는 API 파라미터(jsonl `size`)로만. 프롬프트엔 **끝에 `AR x:y` 토큰 하나만**. 슬롯 토큰 `[PERSONA_LOCK]` 류는 **작성 단계 전용** — 최종 프롬프트에 브래킷이 잔존하면 실격(검증기 `E-SLOT-LEAK`).
+2. **네거티브 기본 금지 + 화이트리스트 2종.** gpt-image-2는 장면 네거티브를 오히려 렌더한다 → **장면 배제는 여전히 전부 긍정형**(군중→"프레임 안엔 인물 한 명, 단독", 배경→"깨끗한 단색 배경", 워터마크→"브랜드 없는 클린 마감"). 예외는 아래 두 레인뿐이며, 이는 우회가 아니라 **컴플라이언스 스티어링**(정책 적합성을 프롬프트에 명시)이다.
+
+   | 티어 | 조건 | 허용 문구 |
+   |---|---|---|
+   | **Tier-0 기본** | 항상 | all-positive. 부정문 0개 |
+   | **Tier-1 텍스트 렌더 가드** | 렌더 텍스트(따옴표 카피)가 실제로 있을 때만 | 화이트리스트 7종: `no extra words` · `no duplicate text` · `no invented glyphs` · `no watermark` · `no logo` · `no extra text` · `verbatim, no extra characters` |
+   | **Tier-2 화보 컴플라이언스 레인** | 명시 선언 시만(휴리스틱 승격 금지) | SAFETY_ASSERT(긍정형, 피사체절) + NEGATIVE_TAIL(AR 직전 정확히 1회) **페어** — 고정 문자열, 상세 `references/editorial-hwabo.md` |
+
+   Tier-1 결합 공식(문서가 권장하는 유일한 방출형 1줄): `All text appears once, perfectly legible — no duplicate text, no extra words, no invented glyphs, no watermark.`
+   Tier-2 고정 문자열 — SAFETY_ASSERT: `adult Korean woman in her late 20s, 25+, original character, non-nude fashion editorial styling, fully opaque fabric, covered chest line, editorial upright pose` / NEGATIVE_TAIL: `no nudity, no nipple or genital exposure, no wardrobe malfunction, no extra people, no text, no watermark` (순서 보존 부분집합만 허용, tail 단독 사용 금지).
+
+   | 빼려는 것 | 레인 |
+   |---|---|
+   | 장면 요소(사람·사물·배경·소품) | **긍정형 재서술** (Tier-0) |
+   | 텍스트 렌더 결함(중복·유령 글자·워터마크) | **Tier-1** 화이트리스트 |
+   | 정책 안전 단언(화보) | **Tier-2** 페어 |
+
+   `Negative:` 라벨 섹션은 **전 티어 금지**(`E-NEG-SECTION`).
 3. **SD-era 폐기 어휘 금지.** `masterpiece/best quality/8k/4k/uhd/trending on artstation/ultra-detailed/highly detailed/sharp focus`. 가중치 `(word:1.3)`, 슬래시 플래그 `--ar/--v`, 본문 `§`, 빈 형용사 `멋지게/감성적으로/고급스럽게/beautiful/stunning`.
 4. **장비 스펙은 노이즈 → 결과로 환원.** 카메라 EXIF·조명 장비명 대신 결과: "shallow DoF, background falls off softly", "long soft-edged shadows", "warm key + cool rim". (패션의 `Lens character:`·`Director signature:` 라인은 '결과+레퍼런스 앵커'라 예외.)
 5. **수치 명세는 박는다.** HEX 팔레트(컷당 3~5색), 켈빈, `key:fill 1:2` 비율 → 품질↑.
@@ -31,7 +48,7 @@ description: 막연한 요청을 gpt-image-2(Codex `$imagegen`) 완성 프롬프
 7. **이상적 피부 금지** → "natural skin texture, visible pores, subtle film grain".
 8. **실재 상표·인물 참조 금지** — 가상 브랜드/페르소나.
 
-## 마스터 템플릿 (기본 6섹션 + 끝 AR)
+## 마스터 템플릿 (포맷 A 기본 6섹션 + 끝 AR)
 
 순수 서술 + HEX. 첫 섹션이 attention을 가장 강하게 받으니 **핵심 시각정보를 최상단에**. 헤더 `# 1. Scene` 식 OK, 본문에 `§` 금지.
 
@@ -47,9 +64,15 @@ description: 막연한 요청을 gpt-image-2(Codex `$imagegen`) 완성 프롬프
 
 > jsonl 스키마·완성 예제·codex 호출 골격·8섹션 변형 → **`references/jsonl-and-examples.md`**.
 
+## 포맷 A / 포맷 B
+
+- **포맷 A — 라벨 6섹션** (위 표 그대로): 포스터·키아트·인포그래픽·도감·카드뉴스·만화 등 **구조물** 전반.
+- **포맷 B — 화보 플랫 콤마형 단문**: 라벨 없이 콤마로 잇는 한 문단. 슬롯 순서 고정 — 피사체→얼굴→헤어→장르앵커("한국 남성지풍 클린 화보 컷")→장면/포즈→의상→구도→조명→팔레트 `#HEX`×3~5→질감→[Tier-2 tail]→`AR x:y`. 분량 **350~450자**, 기본 AR `2:3`(1024x1536).
+- **라우팅**: 단독 인물 화보/글래머 에디토리얼 → **B**(슬롯 12종·Tier-2 문구 상세는 `references/editorial-hwabo.md`), 그 외 전부 → **A**.
+
 ## 사이즈 락 (codex 러너 6종)
 
-API는 커스텀(최대 3840px·16배수·비율 ≤3:1)이지만 **codex(`$imagegen`) 경로는 6종만** 안전. `auto` 금지, 챕터 내 통일.
+API는 커스텀이지만 **codex(`$imagegen`) 경로는 6종만** 안전. `auto` 금지, 챕터 내 통일.
 
 | ar | size | ar | size |
 |---|---|---|---|
@@ -58,29 +81,49 @@ API는 커스텀(최대 3840px·16배수·비율 ≤3:1)이지만 **codex(`$imag
 | 3:2 / 4:3 | `1536x1024` | 밀집/다컷 | `2048x2048` |
 
 `2:3`만 정확비, `3:4`·`4:5`는 세로 근사 정규화. 비지원 값(`1024x1280` 등)도 가까운 6종으로.
+> API 하드 제약(최대변 3840·16배수·비율 ≤3:1·총픽셀 655,360~8,294,400)·투명 배경은 gpt-image-2 미지원(gpt-image-1.5 폴백) → `references/jsonl-and-examples.md` 모델 팩트.
 
 ## 텍스트 렌더 (gpt-image-2 강점, 한글 포함)
 
 - 정확한 카피를 **따옴표로 고정**: `text reads "오늘 더 따뜻해요"`. 폰트·크기·위치·HEX 지정.
-- **"appears once, perfectly legible" 1회 명시.** 같은 카피 두 번 쓰면 두 번 렌더하니 금지.
-- 한 줄에 다국어 혼합 금지. 어려운 철자는 ALL CAPS/글자 풀어쓰기. 렌더 라벨엔 **실제 문구만**(플레이스홀더 금지).
+- 카피 2개 이상이면 **롤 라벨 블록**으로 분리: `headline "봄밤 야시장"` / `subhead "4.20 SAT 6PM"` / `callout "선착순 100명"` — 롤마다 위치·크기·폰트를 따로 박는다.
+- **KO/EN 언어 라벨 분리**: 한 따옴표 문자열 안에 한글+영문 혼합 금지. 렌더 텍스트는 **한 줄 한 언어**.
+- 렌더 텍스트가 있으면 Tier-1 결합 공식 1회(철칙 #2). 같은 카피 두 번 쓰면 두 번 렌더하니 금지.
+- **한글 스펠아웃 금지** — 하이픈 풀어쓰기는 하이픈이 글자로 렌더됨(실측). 정확도 레버는 **캔버스 크기**(2048 실측 12/12 만점, `references/typography-layout.md` §7). 영문 조어만 ALL CAPS/스펠아웃 최후수단. 렌더 라벨엔 **실제 문구만**(플레이스홀더 금지).
+- **밀집 텍스트**(카피 블록 3개+ 또는 소형 글자)는 `quality: high` + **큰 변 페어링**(1536/1792 긴 변 또는 `2048x2048`).
+- 영역 문법·폰트 어휘·그리드 상세 → **`references/typography-layout.md`**.
 
-## 카테고리 라우팅 (C1~C10)
+## 국문/영문 혼용
 
-컷타입·기본 AR·필수 디테일·공통 DNA·만화 A/B 전략은 **`references/category-patterns.md`**, 패션 21종은 **`references/style-taxonomy.md`**.
+- **한국어가 이기는 곳**: 장면 서사 골격·무드 형용·문화 부하 명사(남성지풍, 청순, 물오른)·렌더될 한글 카피.
+- **영어가 이기는 곳**: 기법 토큰(shallow DoF, rim light, key:fill, film emulation)·티어 고정 문구(Tier-1/Tier-2 캐노니컬).
+- **하이브리드** = 한국어 골격 문장에 영어 기법 토큰 삽입. 렌더 텍스트는 한 줄 한 언어.
+- 상세 → **`references/photo-vocab.md` §8**.
 
-| C1 패션 | C2 뷰티 | C3 한국어 포스터 | C4 제품 도감 | C5 캠페인 |
-|---|---|---|---|---|
-| **C6 인포그래픽** | **C7 카드뉴스** | **C8 브랜딩 목업** | **C9 3D 아이콘** | **C10 만화** |
+## 카테고리 라우팅 (C1~C11)
+
+컷타입·기본 AR·필수 디테일·공통 DNA·만화 A/B 전략은 **`references/category-patterns.md`**, 패션 21종은 **`references/style-taxonomy.md`**. (사용 빈도순 배치.)
+
+| C1 패션/화보 | C11 시네마틱 키아트 | C3 한국어 포스터 | C4 제품 도감 |
+|---|---|---|---|
+| **C2 뷰티** | **C5 캠페인** | **C6 인포그래픽** | **C7 카드뉴스** |
+| **C8 브랜딩 목업** | **C9 3D 아이콘** | **C10 만화** | |
 
 ## 검증기
 
-응답·생성 전 `node scripts/check_prompt.mjs <file>` (또는 프롬프트를 stdin 파이프). `{ok, errors, warnings}` JSON — **네거티브·앞브래킷·SD폐기어휘·가중치·슬래시플래그·끝AR누락**을 error로, 빈 형용사·HEX누락 등을 warning으로. errors 0이어야 통과. (size는 jsonl 필드라 텍스트 검증기로는 검사 안 함 — jsonl 작성 시 6종 화이트리스트 직접 확인.)
+응답·생성 전 `node scripts/check_prompt.mjs <file>` (또는 프롬프트를 stdin 파이프). **티어 인지형**:
+
+- `--tier <0|1|2>` 티어 강제 / `--jsonl <file>` 레코드 전체 검증 / `--api` E-SIZE-LOCK→warning 강등(하드 제약은 유지) / `--test` fixtures 셀프테스트.
+- 티어 결정 우선순위: `--tier` > jsonl `tier` 필드 > jsonl `lane`("editorial"→2) > 휴리스틱(렌더 텍스트 존재→1, 아니면 0). **Tier-2는 휴리스틱으로 승격 불가.**
+- 출력: `{ok, format, tier, errors:[{code,msg,hint?}], warnings:[{code,msg}]}` — errors 0이어야 exit 0.
+- 에러 예: `E-NEG-TIER`(티어 미선언 상태에서 상위 티어 문구), `E-SLOT-LEAK`(슬롯 토큰 잔존), `E-SIZE-LOCK`(size 6종 밖). 그 외 네거티브·앞브래킷·SD폐기어휘·가중치·슬래시플래그·끝AR누락도 error.
 
 ## 레퍼런스
 
-- **`references/category-patterns.md`** — C1~C10 컷타입·기본 AR·필수 디테일·공통 DNA·만화 A/B.
-- **`references/jsonl-and-examples.md`** — jsonl 스키마·완성 예제·codex 골격·8섹션 변형.
-- **`references/photo-vocab.md`** — 카메라·조명·필름·구도·색 어휘(결과 기반).
+- **`references/category-patterns.md`** — C1~C11 컷타입·기본 AR·필수 디테일·공통 DNA·만화 A/B.
+- **`references/jsonl-and-examples.md`** — jsonl 스키마(format/tier/lane)·모델 팩트·완성 예제·codex 골격·8섹션 변형.
+- **`references/typography-layout.md`** — 영역 문법·롤 라벨·폰트 어휘·정확 문자열·그리드.
+- **`references/editorial-hwabo.md`** — 화보 Format B·슬롯 12종·Tier-2 문구(로컬 상세판 있으면 우선).
+- **`references/photo-vocab.md`** — 카메라·조명·필름·구도·색 어휘(결과 기반) + 국문/영문 혼용 규칙(§8).
 - **`references/style-taxonomy.md`** — 패션 21종 + persona DNA + MASTER_TEMPLATE_V4.
 - 생성·양산: **[codex-imagegen]**. 단일 1장은 그냥 codex 직접.

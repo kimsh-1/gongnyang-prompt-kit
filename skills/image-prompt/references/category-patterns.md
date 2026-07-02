@@ -1,6 +1,6 @@
-# 카테고리 패턴 — C1~C10 (컷타입 · 기본 AR · 필수 디테일)
+# 카테고리 패턴 — C1~C11 (컷타입 · 기본 AR · 필수 디테일)
 
-> 사용자가 카테고리·컷타입을 지정하거나 "라이브러리 스타일 변형"을 요청할 때 본다. 모든 표현은 **긍정형**(부정문·`no ~` 안 씀, 빼고 싶은 건 "텍스트 없음"·"여백" 식 긍정 상태로).
+> 사용자가 카테고리·컷타입을 지정하거나 "라이브러리 스타일 변형"을 요청할 때 본다. 표현은 **긍정형 기본 + 티어 화이트리스트**(SKILL.md 철칙 #2) — 장면 배제는 "텍스트 없음"·"여백" 식 긍정 상태로, `no ~`는 Tier-1(텍스트 렌더 가드)/Tier-2(화보 컴플라이언스 페어)에서만.
 
 **공통 시각 DNA (라이브러리 시스템 톤):** 플로팅 라벨+헤어라인 리더선 / HEX 정밀 팔레트 / 재질 매크로 / 소프트박스+림라이트 / 매거진 여백. 무드 3종 — 웜 아이보리(`#F7F4EC·#B76E79`) / 월해 다크(`#0F1D30·#1E3A5F·#B76E79`) / 테크 뉴트럴(`#F2F3F5·#11151A·#3B82F6`). 패션 에디토리얼 상세(persona DNA·Lens character·Director signature·Film 3파트)는 `style-taxonomy.md`, 결과 기반 어휘는 `photo-vocab.md`.
 
@@ -9,6 +9,7 @@
 - 기본 AR: 룩북/제품 전신 `3:4`, 플랫레이 `1:1`, 포스터 `4:5`
 - 필수: 의상 순서·핏·원단·액세서리 배치·바디/마네킹 노출, 필요 시 카탈로그 라벨
 - 패턴: `Scene / Camera / Lighting / Color grading / Texture/Medium / Text-in-image / AR`
+- **단독 인물 화보(글래머 에디토리얼)는 Format B** — 플랫 콤마형 단문, 슬롯 12종·Tier-2 문구는 `references/editorial-hwabo.md`
 
 ## C2 뷰티
 - 컷타입: `texture_swatch` `water_droplet` `splash_flow` `powder_burst` `cream_smear` `hero_glow` `ingredient_macro`
@@ -65,3 +66,11 @@
 - 패턴: 오프닝 미디엄 문장 → 레이아웃 문장 → 컷 시퀀스 → 화풍 문장 → 팔레트 문장 → 텍스트 가독 문장 → `AR`
 - 한글 대사 4~10자, 컷당 말풍선 1~2개, 다컷은 quality high·2048
 - **두 전략**: (A) **멀티패널 통합 1페이지** — 캐릭터 일관성 강점, quality high·2048, 컷당 `카메라앵글+장면+감정`, establishing→close-up→reaction, 감정 피크 1회·마지막 회수, 다이나믹 레이아웃(사선거터·broken-border·cross-panel·비정형컷) 40%+. (B) **컷 단위 생성 후 조판** — 정밀 통제, 1컷=1호출, persona 블록 반복, "프레임 안엔 인물 한 명, 단독 포트레이트" 긍정 단언. 한국 웹툰(S07): soft cel shading·glossy K-beauty lips·dewy blush·vertical-scroll·3:4/4:5.
+
+## C11 시네마틱 키아트
+- 컷타입: `teaser_keyart` `character_one_sheet` `ensemble_montage` `vista_wide` `poster_2x3`
+- 기본 AR: `16:9`(1792x1024) 또는 `3:2`(1536x1024), 포스터는 `2:3`(1024x1536)
+- **영문 Format A 사용** — 라벨 6섹션 그대로, 본문은 영어(시네마틱 어휘 밀도가 영어에서 높음)
+- 필수: **타이틀 트리트먼트용 negative space 확보**(상단 밴드 또는 중앙 여백을 Scene에 명시) · **장르별 광 레시피** — 네온 사이버펑크(practical neon glow, teal&orange, wet reflective street) / 스릴러 저조도(low key, hard rim, deep shadow pools) / 판타지 골든(golden hour volumetric light, warm haze) · **billing-block 대비 하단 여백**(하단 1/8 클린 밴드)
+- 타이틀을 실제로 렌더할 땐 `typography-layout.md`의 롤 블록(headline/billing) 적용, Tier-1 결합 공식 1회
+- 캐릭터 원시트는 단독 인물+콘트라포스토+림 분리, 앙상블 몽타주는 크기 위계(주연 대형·조연 중형·배경 비스타)를 명시

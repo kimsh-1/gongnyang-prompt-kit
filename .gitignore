@@ -4,3 +4,7 @@ out/
 node_modules/
 .DS_Store
 .omc/
+
+# 에디토리얼 화보 로컬 상세판 — 비공개 토큰표, 커밋 금지
+**/editorial-hwabo.local.md
+experiments/v2-validation/runner.out

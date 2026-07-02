@@ -1,0 +1,218 @@
+2026-07-02T16:00:17 START: files=expA_text.jsonl,expB_compliance.jsonl,expC_layout.jsonl total=56 todo=56 skip=0 workers=6 timeout=300s dry_run=0
+2026-07-02T16:01:40 SAVED: A-base-1024-med-r3 out/expA/A-base-1024-med-r3.png
+2026-07-02T16:01:45 SAVED: A-base-1024-high-r2 out/expA/A-base-1024-high-r2.png
+2026-07-02T16:01:49 SAVED: A-base-1024-med-r1 out/expA/A-base-1024-med-r1.png
+2026-07-02T16:01:50 SAVED: A-base-1024-med-r2 out/expA/A-base-1024-med-r2.png
+2026-07-02T16:01:54 SAVED: A-base-1024-high-r1 out/expA/A-base-1024-high-r1.png
+2026-07-02T16:02:07 SAVED: A-base-1024-high-r3 out/expA/A-base-1024-high-r3.png
+2026-07-02T16:03:28 SAVED: A-base-2048-med-r2 out/expA/A-base-2048-med-r2.png
+2026-07-02T16:03:30 SAVED: A-base-2048-med-r1 out/expA/A-base-2048-med-r1.png
+2026-07-02T16:03:41 SAVED: A-base-2048-med-r3 out/expA/A-base-2048-med-r3.png
+2026-07-02T16:03:55 SAVED: A-base-2048-high-r2 out/expA/A-base-2048-high-r2.png
+2026-07-02T16:04:02 SAVED: A-base-2048-high-r3 out/expA/A-base-2048-high-r3.png
+2026-07-02T16:04:46 SAVED: A-treat-1024-med-r1 out/expA/A-treat-1024-med-r1.png
+2026-07-02T16:05:06 SAVED: A-treat-1024-med-r3 out/expA/A-treat-1024-med-r3.png
+2026-07-02T16:05:13 SAVED: A-treat-1024-high-r1 out/expA/A-treat-1024-high-r1.png
+2026-07-02T16:05:22 SAVED: A-treat-1024-med-r2 out/expA/A-treat-1024-med-r2.png
+2026-07-02T16:05:38 SAVED: A-treat-1024-high-r2 out/expA/A-treat-1024-high-r2.png
+2026-07-02T16:05:45 SAVED: A-base-2048-high-r1 out/expA/A-base-2048-high-r1.png
+2026-07-02T16:06:03 SAVED: A-treat-1024-high-r3 out/expA/A-treat-1024-high-r3.png
+2026-07-02T16:06:57 SAVED: A-treat-2048-med-r1 out/expA/A-treat-2048-med-r1.png
+2026-07-02T16:06:59 SAVED: A-treat-2048-med-r2 out/expA/A-treat-2048-med-r2.png
+2026-07-02T16:07:19 SAVED: A-treat-2048-high-r1 out/expA/A-treat-2048-high-r1.png
+2026-07-02T16:07:47 SAVED: A-treat-2048-high-r3 out/expA/A-treat-2048-high-r3.png
+2026-07-02T16:08:05 SAVED: A-treat-2048-med-r3 out/expA/A-treat-2048-med-r3.png
+2026-07-02T16:09:50 SAVED: B-s01-base out/expB/B-s01-base.png
+2026-07-02T16:09:57 SAVED: B-s01-treat out/expB/B-s01-treat.png
+2026-07-02T16:10:08 SAVED: A-treat-2048-high-r2 out/expA/A-treat-2048-high-r2.png
+2026-07-02T16:10:57 SAVED: B-s02-treat out/expB/B-s02-treat.png
+2026-07-02T16:11:08 SAVED: B-s03-base out/expB/B-s03-base.png
+2026-07-02T16:12:19 FAILED: B-s02-base reason=timeout
+2026-07-02T16:12:45 SAVED: B-s03-treat out/expB/B-s03-treat.png
+2026-07-02T16:13:04 SAVED: B-s04-base out/expB/B-s04-base.png
+2026-07-02T16:13:08 SAVED: B-s04-treat out/expB/B-s04-treat.png
+2026-07-02T16:14:04 SAVED: B-s05-base out/expB/B-s05-base.png
+2026-07-02T16:14:11 SAVED: B-s05-treat out/expB/B-s05-treat.png
+2026-07-02T16:15:06 SAVED: B-s06-base out/expB/B-s06-base.png
+2026-07-02T16:15:30 SAVED: B-s06-treat out/expB/B-s06-treat.png
+2026-07-02T16:15:40 SAVED: B-s07-treat out/expB/B-s07-treat.png
+2026-07-02T16:15:44 SAVED: B-s07-base out/expB/B-s07-base.png
+2026-07-02T16:17:01 SAVED: B-s08-treat out/expB/B-s08-treat.png
+2026-07-02T16:17:47 SAVED: B-s09-base out/expB/B-s09-base.png
+2026-07-02T16:18:12 SAVED: B-s09-treat out/expB/B-s09-treat.png
+2026-07-02T16:18:35 SAVED: C-P1-base-r1 out/expC/C-P1-base-r1.png
+2026-07-02T16:19:04 FAILED: B-s08-base reason=timeout
+2026-07-02T16:19:13 SAVED: C-P1-base-r2 out/expC/C-P1-base-r2.png
+2026-07-02T16:19:30 SAVED: C-P1-treat-r1 out/expC/C-P1-treat-r1.png
+2026-07-02T16:20:00 SAVED: C-P1-treat-r2 out/expC/C-P1-treat-r2.png
+2026-07-02T16:20:25 SAVED: C-P2-base-r1 out/expC/C-P2-base-r1.png
+2026-07-02T16:20:36 SAVED: C-P2-base-r2 out/expC/C-P2-base-r2.png
+2026-07-02T16:20:40 FAILED: B-s10-base reason=timeout
+2026-07-02T16:20:44 FAILED: B-s10-treat reason=timeout
+2026-07-02T16:20:53 SAVED: C-P2-treat-r1 out/expC/C-P2-treat-r1.png
+2026-07-02T16:21:22 SAVED: C-P2-treat-r2 out/expC/C-P2-treat-r2.png
+2026-07-02T16:21:56 SAVED: C-P3-base-r1 out/expC/C-P3-base-r1.png
+2026-07-02T16:22:20 SAVED: C-P3-treat-r1 out/expC/C-P3-treat-r1.png
+2026-07-02T16:22:26 SAVED: C-P3-treat-r2 out/expC/C-P3-treat-r2.png
+2026-07-02T16:22:45 SAVED: C-P3-base-r2 out/expC/C-P3-base-r2.png
+2026-07-02T16:22:45 DONE: ok=52 fail=4 skip=0 total=56 elapsed=22.5min
+2026-07-02T16:50:57 START: files=expA_text.jsonl,expB_compliance.jsonl,expC_layout.jsonl total=56 todo=4 skip=52 workers=4 timeout=300s dry_run=0
+2026-07-02T16:50:57 SKIP: A-base-1024-med-r1
+2026-07-02T16:50:57 SKIP: A-base-1024-med-r2
+2026-07-02T16:50:57 SKIP: A-base-1024-med-r3
+2026-07-02T16:50:57 SKIP: A-base-1024-high-r1
+2026-07-02T16:50:57 SKIP: A-base-1024-high-r2
+2026-07-02T16:50:57 SKIP: A-base-1024-high-r3
+2026-07-02T16:50:57 SKIP: A-base-2048-med-r1
+2026-07-02T16:50:57 SKIP: A-base-2048-med-r2
+2026-07-02T16:50:57 SKIP: A-base-2048-med-r3
+2026-07-02T16:50:57 SKIP: A-base-2048-high-r1
+2026-07-02T16:50:57 SKIP: A-base-2048-high-r2
+2026-07-02T16:50:57 SKIP: A-base-2048-high-r3
+2026-07-02T16:50:57 SKIP: A-treat-1024-med-r1
+2026-07-02T16:50:57 SKIP: A-treat-1024-med-r2
+2026-07-02T16:50:57 SKIP: A-treat-1024-med-r3
+2026-07-02T16:50:57 SKIP: A-treat-1024-high-r1
+2026-07-02T16:50:57 SKIP: A-treat-1024-high-r2
+2026-07-02T16:50:57 SKIP: A-treat-1024-high-r3
+2026-07-02T16:50:57 SKIP: A-treat-2048-med-r1
+2026-07-02T16:50:57 SKIP: A-treat-2048-med-r2
+2026-07-02T16:50:57 SKIP: A-treat-2048-med-r3
+2026-07-02T16:50:57 SKIP: A-treat-2048-high-r1
+2026-07-02T16:50:57 SKIP: A-treat-2048-high-r2
+2026-07-02T16:50:57 SKIP: A-treat-2048-high-r3
+2026-07-02T16:50:57 SKIP: B-s01-base
+2026-07-02T16:50:57 SKIP: B-s01-treat
+2026-07-02T16:50:57 SKIP: B-s02-treat
+2026-07-02T16:50:57 SKIP: B-s03-base
+2026-07-02T16:50:57 SKIP: B-s03-treat
+2026-07-02T16:50:57 SKIP: B-s04-base
+2026-07-02T16:50:57 SKIP: B-s04-treat
+2026-07-02T16:50:57 SKIP: B-s05-base
+2026-07-02T16:50:57 SKIP: B-s05-treat
+2026-07-02T16:50:57 SKIP: B-s06-base
+2026-07-02T16:50:57 SKIP: B-s06-treat
+2026-07-02T16:50:57 SKIP: B-s07-base
+2026-07-02T16:50:57 SKIP: B-s07-treat
+2026-07-02T16:50:57 SKIP: B-s08-treat
+2026-07-02T16:50:57 SKIP: B-s09-base
+2026-07-02T16:50:57 SKIP: B-s09-treat
+2026-07-02T16:50:57 SKIP: C-P1-base-r1
+2026-07-02T16:50:57 SKIP: C-P1-base-r2
+2026-07-02T16:50:57 SKIP: C-P1-treat-r1
+2026-07-02T16:50:57 SKIP: C-P1-treat-r2
+2026-07-02T16:50:57 SKIP: C-P2-base-r1
+2026-07-02T16:50:57 SKIP: C-P2-base-r2
+2026-07-02T16:50:57 SKIP: C-P2-treat-r1
+2026-07-02T16:50:57 SKIP: C-P2-treat-r2
+2026-07-02T16:50:57 SKIP: C-P3-base-r1
+2026-07-02T16:50:57 SKIP: C-P3-base-r2
+2026-07-02T16:50:57 SKIP: C-P3-treat-r1
+2026-07-02T16:50:57 SKIP: C-P3-treat-r2
+2026-07-02T16:54:06 SAVED: B-s02-base out/expB/B-s02-base.png
+2026-07-02T16:54:09 SAVED: B-s10-base out/expB/B-s10-base.png
+2026-07-02T16:54:40 FAILED: B-s08-base reason=no-image
+2026-07-02T16:55:57 FAILED: B-s10-treat reason=timeout
+2026-07-02T16:55:57 DONE: ok=2 fail=2 skip=52 total=56 elapsed=5.0min
+2026-07-02T16:56:28 START: files=expA_text.jsonl,expB_compliance.jsonl,expC_layout.jsonl total=56 todo=4 skip=52 workers=1 timeout=300s dry_run=0
+2026-07-02T16:56:28 SKIP: A-base-1024-med-r1
+2026-07-02T16:56:28 SKIP: A-base-1024-med-r2
+2026-07-02T16:56:28 SKIP: A-base-1024-med-r3
+2026-07-02T16:56:28 SKIP: A-base-1024-high-r1
+2026-07-02T16:56:28 SKIP: A-base-1024-high-r2
+2026-07-02T16:56:28 SKIP: A-base-1024-high-r3
+2026-07-02T16:56:28 SKIP: A-base-2048-med-r1
+2026-07-02T16:56:28 SKIP: A-base-2048-med-r2
+2026-07-02T16:56:28 SKIP: A-base-2048-med-r3
+2026-07-02T16:56:28 SKIP: A-base-2048-high-r1
+2026-07-02T16:56:28 SKIP: A-base-2048-high-r2
+2026-07-02T16:56:28 SKIP: A-base-2048-high-r3
+2026-07-02T16:56:28 SKIP: A-treat-1024-med-r1
+2026-07-02T16:56:28 SKIP: A-treat-1024-med-r2
+2026-07-02T16:56:28 SKIP: A-treat-1024-med-r3
+2026-07-02T16:56:28 SKIP: A-treat-1024-high-r1
+2026-07-02T16:56:28 SKIP: A-treat-1024-high-r2
+2026-07-02T16:56:28 SKIP: A-treat-1024-high-r3
+2026-07-02T16:56:28 SKIP: A-treat-2048-med-r1
+2026-07-02T16:56:28 SKIP: A-treat-2048-med-r2
+2026-07-02T16:56:28 SKIP: A-treat-2048-med-r3
+2026-07-02T16:56:28 SKIP: A-treat-2048-high-r1
+2026-07-02T16:56:28 SKIP: A-treat-2048-high-r2
+2026-07-02T16:56:28 SKIP: A-treat-2048-high-r3
+2026-07-02T16:56:28 SKIP: B-s01-base
+2026-07-02T16:56:28 SKIP: B-s01-treat
+2026-07-02T16:56:28 SKIP: B-s02-base
+2026-07-02T16:56:28 SKIP: B-s02-treat
+2026-07-02T16:56:28 SKIP: B-s03-base
+2026-07-02T16:56:28 SKIP: B-s03-treat
+2026-07-02T16:56:28 SKIP: B-s04-base
+2026-07-02T16:56:28 SKIP: B-s04-treat
+2026-07-02T16:56:28 SKIP: B-s05-base
+2026-07-02T16:56:28 SKIP: B-s05-treat
+2026-07-02T16:56:28 SKIP: B-s06-base
+2026-07-02T16:56:28 SKIP: B-s06-treat
+2026-07-02T16:56:28 SKIP: B-s07-base
+2026-07-02T16:56:28 SKIP: B-s07-treat
+2026-07-02T16:56:28 SKIP: B-s08-treat
+2026-07-02T16:56:28 SKIP: B-s09-base
+2026-07-02T16:56:28 SKIP: B-s09-treat
+2026-07-02T16:56:28 SKIP: B-s10-base
+2026-07-02T16:56:28 SKIP: C-P1-base-r1
+2026-07-02T16:56:28 SKIP: C-P1-base-r2
+2026-07-02T16:56:28 SKIP: C-P1-treat-r1
+2026-07-02T16:56:28 SKIP: C-P2-base-r1
+2026-07-02T16:56:28 SKIP: C-P2-base-r2
+2026-07-02T16:56:28 SKIP: C-P2-treat-r1
+2026-07-02T16:56:28 SKIP: C-P3-base-r1
+2026-07-02T16:56:28 SKIP: C-P3-base-r2
+2026-07-02T16:56:28 SKIP: C-P3-treat-r1
+2026-07-02T16:56:28 SKIP: C-P3-treat-r2
+2026-07-02T16:59:29 SAVED: B-s08-base out/expB/B-s08-base.png
+2026-07-02T17:04:29 FAILED: B-s10-treat reason=timeout
+2026-07-02T17:06:56 SAVED: C-P1-treat-r2 out/expC/C-P1-treat-r2.png
+2026-07-02T17:09:01 SAVED: C-P2-treat-r2 out/expC/C-P2-treat-r2.png
+2026-07-02T17:09:01 DONE: ok=3 fail=1 skip=52 total=56 elapsed=12.6min
+2026-07-02T17:09:39 START: files=expB_compliance.jsonl total=20 todo=1 skip=19 workers=1 timeout=300s dry_run=0
+2026-07-02T17:09:39 SKIP: B-s01-base
+2026-07-02T17:09:39 SKIP: B-s01-treat
+2026-07-02T17:09:39 SKIP: B-s02-base
+2026-07-02T17:09:39 SKIP: B-s02-treat
+2026-07-02T17:09:39 SKIP: B-s03-base
+2026-07-02T17:09:39 SKIP: B-s03-treat
+2026-07-02T17:09:39 SKIP: B-s04-base
+2026-07-02T17:09:39 SKIP: B-s04-treat
+2026-07-02T17:09:39 SKIP: B-s05-base
+2026-07-02T17:09:39 SKIP: B-s05-treat
+2026-07-02T17:09:39 SKIP: B-s06-base
+2026-07-02T17:09:39 SKIP: B-s06-treat
+2026-07-02T17:09:39 SKIP: B-s07-base
+2026-07-02T17:09:39 SKIP: B-s07-treat
+2026-07-02T17:09:39 SKIP: B-s08-base
+2026-07-02T17:09:39 SKIP: B-s08-treat
+2026-07-02T17:09:39 SKIP: B-s09-base
+2026-07-02T17:09:39 SKIP: B-s09-treat
+2026-07-02T17:09:39 SKIP: B-s10-base
+2026-07-02T17:14:39 FAILED: B-s10-treat reason=timeout
+2026-07-02T17:14:39 DONE: ok=0 fail=1 skip=19 total=20 elapsed=5.0min
+2026-07-02T17:15:40 START: files=expB_compliance.jsonl total=20 todo=3 skip=17 workers=1 timeout=300s dry_run=0
+2026-07-02T17:15:40 SKIP: B-s01-base
+2026-07-02T17:15:40 SKIP: B-s01-treat
+2026-07-02T17:15:40 SKIP: B-s02-base
+2026-07-02T17:15:40 SKIP: B-s02-treat
+2026-07-02T17:15:40 SKIP: B-s03-base
+2026-07-02T17:15:40 SKIP: B-s03-treat
+2026-07-02T17:15:40 SKIP: B-s04-base
+2026-07-02T17:15:40 SKIP: B-s04-treat
+2026-07-02T17:15:40 SKIP: B-s05-treat
+2026-07-02T17:15:40 SKIP: B-s06-base
+2026-07-02T17:15:40 SKIP: B-s06-treat
+2026-07-02T17:15:40 SKIP: B-s07-base
+2026-07-02T17:15:40 SKIP: B-s07-treat
+2026-07-02T17:15:40 SKIP: B-s08-base
+2026-07-02T17:15:40 SKIP: B-s08-treat
+2026-07-02T17:15:40 SKIP: B-s09-base
+2026-07-02T17:15:40 SKIP: B-s09-treat
+2026-07-02T17:18:31 SAVED: B-s05-base out/expB/B-s05-base.png
+2026-07-02T17:23:31 FAILED: B-s10-base reason=timeout
+2026-07-02T17:26:36 SAVED: B-s10-treat out/expB/B-s10-treat.png
+2026-07-02T17:26:36 DONE: ok=2 fail=1 skip=17 total=20 elapsed=10.9min

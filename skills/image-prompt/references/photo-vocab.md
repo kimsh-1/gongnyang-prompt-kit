@@ -1,6 +1,6 @@
 # 사진 어휘 풀 — 결과 기반 토큰 (photo-vocab)
 
-> gpt-image-2는 **장비명을 모른다.** 아래 축에서 고를 때도 카메라/조명 장비를 그대로 박지 말고 **결과(빛·심도·질감·색)로 환원**해서 쓴다. 모든 표현은 긍정형 서술. 부정문(`no ~`)·SD 품질태그·가중치 문법은 쓰지 않는다.
+> gpt-image-2는 **장비명을 모른다.** 아래 축에서 고를 때도 카메라/조명 장비를 그대로 박지 말고 **결과(빛·심도·질감·색)로 환원**해서 쓴다. 표현은 긍정형 기본 + 티어 화이트리스트(SKILL.md 철칙 #2) — 장면 배제 부정문은 여전히 0개, `no ~`는 Tier-1/Tier-2 캐노니컬 문구로만. SD 품질태그·가중치 문법은 쓰지 않는다.
 
 ## 1. 심도·렌즈 character (결과로)
 - 광각 느낌: "wide field of view, environment fully visible, mild edge stretch, deep focus front-to-back".
@@ -46,5 +46,17 @@
 - 스트리트 다큐: available light, slightly desaturated, candid framing, deep focus.
 - 제품 히어로: clean softbox gradient, single hero spotlight, cool rim, HEX 배경.
 - 한국 웹툰: soft cel shading, glossy K-beauty finish, dewy highlights, vertical scroll.
+
+## 8. 국문/영문 혼용 규칙
+
+| 이기는 언어 | 영역 |
+|---|---|
+| **한국어 승** | 장면 서사 골격(누가·어디서·무엇을) · 무드 형용(아련한, 서늘한) · 문화 부하 명사(남성지풍, 청순, 물오른) · 렌더될 한글 카피 |
+| **영어 승** | 심도(shallow DoF, deep focus) · 조명(rim light, key:fill 1:2, clamshell) · 필름(Portra emulation, halation) · 포즈 술어(contrapposto, over-the-shoulder) · 티어 고정 문구(Tier-1/Tier-2 캐노니컬) · HEX 주변 기술 토큰(gradient, duotone) |
+
+- **하이브리드 패턴** = 한국어 골격 문장에 영어 기법 토큰 삽입. 실사용 예 2종:
+  1. "창가의 아침빛 아래 선 인물, soft window light from camera left, shallow DoF, 배경은 크림 #F7F4EC 단색." — 한국어 골격 + 영어 조명/심도 토큰.
+  2. 조명 서술은 "부드러운 실내 자연광과 약한 필라이트" vs "soft window light, gentle fill" **어느 쪽도 OK** — 단, 한 문장의 골격 언어는 통일(반쪽짜리 번역체 금지).
+- **렌더 텍스트는 한 줄 한 언어** — 한 따옴표 문자열 안 KO+EN 혼합 금지(W-TEXT-MIXLANG).
 
 > 인물 신원은 고정 디테일로(ethnicity+age → hair → eye(쌍꺼풀·홍채색) → beauty mark → lip finish → outfit(소재+HEX) → 배경 HEX → 카메라 거리). 챕터 내 신원 드리프트 0. 실재 인물·상표 대신 가상 페르소나/브랜드.

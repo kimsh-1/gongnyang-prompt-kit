@@ -1,6 +1,6 @@
 # 패션 에디토리얼 — 21종 스타일 + 마스터 템플릿 + Gold DNA
 
-> women-editorial-lookbook에서 정립한 패션 화보 프롬프트 체계. 모든 제약은 **긍정형 서술**로(부정문·`no ~` 안 씀, 워터마크 등도 "clean unbranded finish"로).
+> women-editorial-lookbook에서 정립한 패션 화보 프롬프트 체계. 제약은 **긍정형 기본 + 티어 화이트리스트**(SKILL.md 철칙 #2) — 워터마크 등 장면 배제는 여전히 "clean unbranded finish" 식 긍정형, `no ~`는 Tier-1/Tier-2 캐노니컬 문구로만.
 
 ## 1. 21종 스타일 택소노미 (STY-01~21)
 
@@ -9,11 +9,15 @@
 
 - 명명: 폴더 `NN_<snake>`, 스타일 ID `STY-NN`, 룩 ID `STY-NN-LMM`.
 - 카탈로그 필드: ID / 슬러그 / 한글명 / 무드 한 줄 / 레퍼런스 인덱스.
+- **Tier-2 레인 필수**: STY-15(boudoir_editorial) · STY-17(resort_beach)는 명시 선언된 Tier-2 컴플라이언스 레인에서만 작성 — SAFETY_ASSERT + NEGATIVE_TAIL 페어(SKILL.md 철칙 #2, 상세 `references/editorial-hwabo.md`).
 
 ## 2. style_card 한 장 구조 (minimal_clean 기준)
 정의 한 줄 · 무드보드 키워드(톤·조명·컬러·소재·헤어메이크업) · 컬렉션(메인+보조 가상 브랜드) · 추천 페르소나(P-NN 1·2순위) · 카메라 디폴트(바디+렌즈+세팅) · 조명 디폴트(L-NN) · 컬러 그레이딩(필름 시뮬) · 룩 리스트(L01~L05) · 셀렉트 기준 · 꼭 들어갈 디테일.
 
 ## 3. MASTER_TEMPLATE_V4 (10섹션 페이스트 블록)
+
+> **단독 인물 화보는 Format B(`references/editorial-hwabo.md`) 우선** — V4 10섹션은 룩북/챕터 시퀀스용.
+
 - §0 Creative Direction — 사진가 voice 한 단락
 - §1 목적/용도 — 컬렉션명 + publication tier
 - §2 핵심 브리프·페르소나·장면 — 나이+캐스팅 + 미감 어휘 A/B/C에서 5~8개
