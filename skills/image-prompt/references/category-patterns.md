@@ -34,6 +34,7 @@
 - 기본 AR: `4:5`, 에디토리얼 포스터 `2:3`
 - 필수: 히어로 제품/모델·캠페인 타이틀·서포팅 라인·브랜드형 비주얼 방향·여백 통제
 - 히어로 하나 + 타이포 시스템 하나로 깔끔하게(과밀 피함)
+- **디자이너 포스터 문법은 `promo-graphics.md`** — 단독 히어로는 P3(오클루전)·P8(모노크롬 스테이징), 시리즈/9그리드는 P4(DNA 문장 공식), 컨셉 티저는 P2(타이포-환경)
 
 ## C6 인포그래픽
 - 컷타입: `poster_dense`(기본) `flow_process` `cutaway` `diagram_vertical` `layered_stack` `cycle_loop` `diagram_horizontal` `comparison`
@@ -62,9 +63,12 @@
   - **완벽주의 버리기 = 밀도 해방**: 소규모 오탈자·간헐적 뭉개짐을 허용하면 슬라이드당 20~30개 텍스트 블록을 채울 수 있다. **중간중간 뭉개진 컷·소규모 오탈자는 이 밀도에서 정상 산출** — 치명 카피만 따옴표로 지키고 나머지는 자유 존에 맡긴 뒤, 걸리는 컷만 재생성(후처리 합성 금지, 철칙 9).
 
 ## C7 카드뉴스
-- 컷타입: `sns_cover`(기본) `sns_content` `tip_card` `viral_hook` `qna_card` `list_card` `editorial_cover` `editorial_content`
-- 기본 AR: `1:1`, 세로 에디토리얼 카드 `2:3`
-- **SNS 썸네일 문법(`sns_cover` 기본)** — 피드에서 멈추게 하는 건 여백이 아니라 밀도다(실측: 매거진 여백형은 나이브 고밀도 컷에 짐).
+- 컷타입: `sns_cover`(기본) `sns_content` `promo_poster` `tip_card` `viral_hook` `qna_card` `list_card` `editorial_cover` `editorial_content`
+- 기본 AR: `1:1`, 세로 에디토리얼 카드 `2:3`, 홍보 포스터 `4:5`
+- **미감 라우팅 2모드** — 요청 성격으로 먼저 가른다:
+  - **정보성 후킹**(뉴스·꿀팁·리스트): 아래 `sns_cover` 밀도 문법.
+  - **홍보판촉물**("홍보물/판촉물/브랜드 느낌/디자인 잘된/제품 홍보"): 컷타입 `promo_poster` → **`promo-graphics.md` P3(오버사이즈 크롭+오클루전)·P4(컬러 블로킹 캠페인)** 기본. 밀도·3D 클레이·배지 남발 금지 — 타이포 구조 + 2~3색 하드 락 + 마감 디바이스가 문법.
+- **SNS 썸네일 문법(`sns_cover` 기본)** — 피드에서 멈추게 하는 건 여백이 아니라 밀도다(실측: 매거진 여백형은 나이브 고밀도 컷에 짐). 단 이 밀도 문법은 정보성 전용 — 홍보판촉물에 쓰면 미감이 죽는다.
   - 초대형 헤드라인이 **상단 40% 이상**, 핵심 키워드는 색 교체·형광 하이라이트·박스 반전으로 분리
   - 배경은 **2톤 색 블로킹**(밝은 필드 + 딥 톤 바닥) 또는 두꺼운 프레임 밴드, 브랜드 팔레트 3색 고정
   - **3D 입체 히어로 오브젝트 1개**(soft clay/plastic 렌더) + 주제 소품 3~5개(동전·계산기·영수증 류)를 하단 존에 — R축 "눈이 여기저기 튀어다니는" 드롭인과 결합해 볼거리 밀도 확보
@@ -95,12 +99,13 @@
 - **두 전략**: (A) **멀티패널 통합 1페이지** — 캐릭터 일관성 강점, quality high·2048, 컷당 `카메라앵글+장면+감정`, establishing→close-up→reaction, 감정 피크 1회·마지막 회수, 다이나믹 레이아웃(사선거터·broken-border·cross-panel·비정형컷) 40%+. (B) **컷 단위 생성 후 조판** — 정밀 통제, 1컷=1호출, persona 블록 반복, "프레임 안엔 인물 한 명, 단독 포트레이트" 긍정 단언. 한국 웹툰(S07): soft cel shading·glossy K-beauty lips·dewy blush·vertical-scroll·3:4/4:5.
 
 ## C11 시네마틱 키아트
-- 컷타입: `teaser_keyart` `character_one_sheet` `ensemble_montage` `vista_wide` `poster_2x3`
+- 컷타입: `teaser_keyart` `character_one_sheet` `ensemble_montage` `vista_wide` `poster_2x3` `shadow_narrative`
 - 기본 AR: `16:9`(1792x1024) 또는 `3:2`(1536x1024), 포스터는 `2:3`(1024x1536)
 - **영문 Format A 사용** — 라벨 6섹션 그대로, 본문은 영어(시네마틱 어휘 밀도가 영어에서 높음)
 - 필수: **타이틀 트리트먼트용 negative space 확보**(상단 밴드 또는 중앙 여백을 Scene에 명시) · **장르별 광 레시피** — 네온 사이버펑크(practical neon glow, teal&orange, wet reflective street) / 스릴러 저조도(low key, hard rim, deep shadow pools) / 판타지 골든(golden hour volumetric light, warm haze) · **billing-block 대비 하단 여백**(하단 1/8 클린 밴드)
 - 타이틀을 실제로 렌더할 땐 `typography-layout.md`의 롤 블록(headline/billing) 적용, Tier-1 결합 공식 1회
 - 캐릭터 원시트는 단독 인물+콘트라포스토+림 분리, 앙상블 몽타주는 크기 위계(주연 대형·조연 중형·배경 비스타)를 명시
+- **그림자 서사(`shadow_narrative`)** — 컨셉 훅형 제품 포스터. 가상 제품을 sharp·premium·중앙 지배적으로 두고, **하드 레이킹 키로 만든 긴 캐스트 그림자가 시네마틱 장면으로 변형**된다(제품의 숨은 이야기 — 필름카메라→연인이 걷는 밤거리, 카세트→춤추는 군중, 향수병→피어나는 꽃). 제품은 또렷·중앙, **그림자가 서사 전담**. Scene에 "제품이 지배적 + 그림자가 무엇으로 변하는지"를 명시, Lighting에 `single hard raking key carving one long clean shadow`. 3어절 한글 슬로건 1개 따옴표 고정(Tier-1 결합공식 1회). 실측(2026-07-06 홍대병 H엔진 14컷): 훅 최강·한글 슬로건 정확. `AR 1:1`(1024x1024) 또는 포스터 `2:3`.
 
 ## C12 프레젠테이션 / 슬라이드 덱
 - 컷타입: `cover_slide` `agenda_slide` `section_divider` `content_slide` `data_slide` `quote_slide` `closing_slide`
