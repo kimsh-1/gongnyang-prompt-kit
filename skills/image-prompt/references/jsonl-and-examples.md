@@ -1,6 +1,6 @@
 # jsonl 스키마 · 모델 팩트 · 완성 예제 · codex 호출 골격
 
-> 라이브러리/배치로 뽑을 때 읽는다. 단발 프롬프트만 쓸 땐 SKILL.md §2만으로 충분.
+> 라이브러리/배치로 뽑을 때 읽는다. 단발 프롬프트만 쓸 땐 SKILL.md의 마스터 템플릿·철칙만으로 충분.
 
 ## 1. gpt-image-2 모델 팩트 (2026)
 
@@ -55,10 +55,10 @@ AR 4:5
 
 ## 4. 완성 예시 — Format B (C1 단독 인물 화보, tier 2 · lane editorial)
 
-플랫 콤마형 단문(350~450자), SAFETY_ASSERT가 피사체절 선두, NEGATIVE_TAIL이 `AR 2:3` 직전 정확히 1회:
+플랫 콤마형 단문(350~450자), SAFETY_ASSERT가 피사체절 선두, NEGATIVE_TAIL이 `AR 2:3` 직전 정확히 1회. 예시의 `[SAFETY_ASSERT]`·`[NEGATIVE_TAIL]`은 작성 단계 슬롯 표기 — 방출 전 `references/editorial-hwabo.md` §3의 동결 문구(유일 정본)로 치환한다:
 
 ```json
-{"id":"C1-HWABO-001","category":"C1","cut_type":"editorial_solo","title":"아침 창가 라운지웨어","format":"B","tier":2,"lane":"editorial","palette":["#F7F4EC","#D9C7B8","#B76E79"],"ar":"2:3","size":"1024x1536","quality":"high","output_format":"webp","output_compression":82,"full_prompt":"adult Korean woman in her late 20s, 25+, original character, non-nude fashion editorial styling, fully opaque fabric, covered chest line, editorial upright pose, 갸름한 얼굴, 다크브라운 단발 헤어, 한국 남성지풍 클린 화보 컷, 창가의 아침빛 아래 커튼을 잡은 포즈, 크림 새틴 라운지웨어 셋업, 무릎 위 3/4 구도, soft window light, shallow DoF, 팔레트 #F7F4EC #D9C7B8 #B76E79, subtle film grain, no nudity, no nipple or genital exposure, no wardrobe malfunction, no extra people, no text, no watermark, AR 2:3","status":"draft","qa":{"goal_fit":0,"text_accuracy":0,"material_realism":0,"layout":0},"output_path":"out/C1-HWABO-001.webp"}
+{"id":"C1-HWABO-001","category":"C1","cut_type":"editorial_solo","title":"아침 창가 라운지웨어","format":"B","tier":2,"lane":"editorial","palette":["#F7F4EC","#D9C7B8","#B76E79"],"ar":"2:3","size":"1024x1536","quality":"high","output_format":"webp","output_compression":82,"full_prompt":"[SAFETY_ASSERT], 갸름한 얼굴, 다크브라운 단발 헤어, 한국 남성지풍 클린 화보 컷, 창가의 아침빛 아래 커튼을 잡은 포즈, 크림 새틴 라운지웨어 셋업, 무릎 위 3/4 구도, soft window light, shallow DoF, 팔레트 #F7F4EC #D9C7B8 #B76E79, subtle film grain, [NEGATIVE_TAIL], AR 2:3","status":"draft","qa":{"goal_fit":0,"text_accuracy":0,"material_realism":0,"layout":0},"output_path":"out/C1-HWABO-001.webp"}
 ```
 - 슬롯 순서: 피사체(SAFETY_ASSERT)→얼굴→헤어→장르앵커→장면/포즈→의상→구도→조명→팔레트 #HEX×3~5→질감→Tier-2 tail→AR. 상세는 `references/editorial-hwabo.md`.
 - tail은 SAFETY_ASSERT와 **페어**(단독 = `E-TIER2-PAIR`), 순서 보존 부분집합만 허용, 위치는 AR 직전(`E-TIER2-POS`).

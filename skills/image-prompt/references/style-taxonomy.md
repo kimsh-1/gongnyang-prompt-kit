@@ -16,7 +16,7 @@
 
 ## 3. MASTER_TEMPLATE_V4 (10섹션 페이스트 블록)
 
-> **단독 인물 화보는 Format B(`references/editorial-hwabo.md`) 우선** — V4 10섹션은 룩북/챕터 시퀀스용.
+> **단독 인물 화보는 Format B(`references/editorial-hwabo.md`) 우선** — V4 10섹션은 룩북/챕터 시퀀스용. (레거시 주의: V4 메타 필드·폴더 규칙은 외부 룩북 프로젝트 기준이며 이 레포 예제·fixtures는 전부 6섹션/Format B 체계.)
 
 - §0 Creative Direction — 사진가 voice 한 단락
 - §1 목적/용도 — 컬렉션명 + publication tier

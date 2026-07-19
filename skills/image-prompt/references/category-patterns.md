@@ -40,8 +40,12 @@
 ## C6 인포그래픽
 - 컷타입: `poster_dense`(기본) `flow_process` `cutaway` `diagram_vertical` `layered_stack` `cycle_loop` `diagram_horizontal` `comparison`
 - 기본 AR: 세로 `2:3`, 가로 `16:9`
-- **밀도 2모드** — 미니멀 플로우로 도망치면 맨입력보다 못해진다(실측: 4카드 플로우는 나이브 고밀도 컷에 짐).
-  - **포스터형(`poster_dense`, 기본)**: 섹션 밴드 4~6개 + 섹션마다 번호·헤더, 셀마다 아이콘/미니 일러스트, **히어로 요소 1개**(실사급 렌더 — 김 나는 컵, 단면 등)를 상단 또는 중앙에, 장식 막대·게이지·미니 지도·비교표를 보조로 깔아 밀도를 채운다. 배경은 종이·크라프트·빈티지 등 질감 있는 톤. **quality high 강제 + 밀집 락 `2048x2048` 권장**(한글 정확도 레버 — 세로 비율이 우선이면 `1024x1536`, 사이즈락 6종 밖 금지).
+- **밀도 2모드 — 밀도가 기본값.** 미니멀 플로우로 도망치면 맨입력보다 못해진다(실측: 4카드 플로우는 나이브 고밀도 컷에 짐).
+  - **포스터형(`poster_dense`, 기본)**:
+    - 섹션 밴드 4~6개 + 섹션마다 번호·헤더, 셀마다 아이콘/미니 일러스트.
+    - **히어로 요소 1개**(실사급 렌더 — 김 나는 컵, 단면 등)를 상단 또는 중앙에, 장식 막대·게이지·미니 지도·비교표를 보조로 깔아 밀도를 채운다.
+    - 배경은 종이·크라프트·빈티지 등 질감 있는 톤.
+    - **quality high 강제 + 밀집 락 `2048x2048` 권장**(한글 정확도 레버 — 세로 비율이 우선이면 `1024x1536`, 사이즈락 6종 밖 금지).
   - **플로우형**: 단계 설명 전용(3~5스텝). 라운드 카드 + 화살표. 요청이 "단계/순서"를 명시할 때만.
 - 필수: 섹션 수·읽기 순서·라벨·아이콘/다이어그램·데이터 위계. 위계는 **핵심 메시지 1개를 압도적으로 크게**, 나머지는 계단식 축소 — 시선이 큰 것→작은 것 순으로 흐르게.
 - 명시 레이아웃: 번호 섹션 밴드, 화살표, 컬럼, 적층 레이어, 중앙 다이어그램, 측면 콜아웃
@@ -50,7 +54,7 @@
   - **수치는 이중 앵커**: 숫자를 큰 타이포로 따옴표 고정 + 막대·게이지·파이는 그 수치의 비율감이 눈에 보이게 지시(`bar filled to roughly 38 percent`). 타이포가 정확도를, 도형이 직관을 맡는다.
   - **핵심 라벨은 따옴표 고정**, 셀 디테일은 `every cell filled with genuine short Korean caption sentences, fully written in real hangul` 로 자유 작성 — 밀도를 깎지 않고 정확도만 배분.
   - **재시도는 단순화가 아니라 축 변경**: 안 나오면 ① 레이아웃 지시를 더 구체화 ② `2048x2048` + quality high ③ 그래도 안 되면 클러스터별 컷 분할(복잡도 유지, 캔버스만 분할). 도표를 포기하는 선택지는 없다.
-- **유형별 돌파 레시피** — 어려운 도표일수록 아래 문법으로 프롬프트를 짠다:
+- **유형별 돌파 레시피 7종**(분기 플로우·네트워크·계층·사이클·단면·비교표·데이터 차트) — 어려운 도표일수록 아래 문법으로 프롬프트를 짠다:
   - **분기 플로우차트**: 그리드를 먼저 선언하고 노드를 좌표로 배치 — `three-column flowchart grid, decision diamond at center column second row`. 분기 화살표는 라벨 포함(`"YES" labeled arrow branching right, "NO" labeled arrow continuing down`).
   - **다대다/네트워크**: 허브-스포크로 뭉개지 말고 연결 수를 세어 박는다 — `seven distinct labeled connection lines`, 교차 지점은 `crossing lines drawn with small bridge gaps at intersections`. 노드 배치는 원형/격자 중 하나를 명시.
   - **계층도/조직도/적층**: 층 수와 층별 노드 수를 전부 선언 — `three-tier hierarchy: one box on top tier, three on middle, five on bottom, connecting lines between tiers`. 적층은 `exploded layered stack, each layer floating with side label`.
@@ -60,7 +64,10 @@
   - **정밀 데이터 차트**: 축·눈금·시리즈를 문장으로 그린다 — `vertical bar chart, y-axis gridlines labeled 0/25/50/75/100, four bars of visibly different heights` + 각 값은 막대 위 숫자 라벨로 따옴표 고정. 눈금 숫자까지 정확해야 하면 그 숫자들도 따옴표 카피에 포함.
 - **고밀도 텍스트 슬라이드(실측 2026-07, 40컷 검증)**: 슬라이드당 렌더 한글 **400~800자도 정면 가능** — "gpt-image-2는 도해를 못 그린다"는 반증됨. 관건은 모델 능력이 아니라 아래 3레버:
   - **캔버스 세로 높이가 텍스트 정확도의 1차 레버**: 초와이드(21:9, codex 실측 세로 ~810px)는 400자에서 글자가 작아져 뭉개진다. **텍스트가 빽빽하면 16:9(세로 ~950px)·2:3·1:1**로 세로를 확보 → 700~800자도 또렷. codex 경로는 큰 캔버스 요청을 무시하고 21:9를 ~1900×810으로 정규화하므로, 정확도는 비율 선택으로 벌어야 한다.
-  - **자유 작성 존이 밀도의 핵심 무기**: 크리티컬 라벨(제목·섹션 헤더)만 따옴표 고정, 나머지 본문은 `each card contains a bold Korean title plus two to three sentences of genuine Korean explanatory text, densely filled, fully written in real hangul, every caption is a real sentence carrying real meaning`. 모델이 개념적으로 **맞는** 설명을 스스로 채운다(B-트리 키값 분배·Raft 로그 인덱스·캐시 트레이드오프까지 논리 정합). placeholder 금지는 부정문 대신 긍정형(`all text lines fully written out as complete hangul words`)으로.
+  - **자유 작성 존이 밀도의 핵심 무기**: 크리티컬 라벨(제목·섹션 헤더)만 따옴표 고정.
+    - 나머지 본문은 `each card contains a bold Korean title plus two to three sentences of genuine Korean explanatory text, densely filled, fully written in real hangul, every caption is a real sentence carrying real meaning`.
+    - 모델이 개념적으로 **맞는** 설명을 스스로 채운다(B-트리 키값 분배·Raft 로그 인덱스·캐시 트레이드오프까지 논리 정합).
+    - placeholder 금지는 부정문 대신 긍정형(`all text lines fully written out as complete hangul words`)으로.
   - **완벽주의 버리기 = 밀도 해방**: 소규모 오탈자·간헐적 뭉개짐을 허용하면 슬라이드당 20~30개 텍스트 블록을 채울 수 있다. **중간중간 뭉개진 컷·소규모 오탈자는 이 밀도에서 정상 산출** — 치명 카피만 따옴표로 지키고 나머지는 자유 존에 맡긴 뒤, 걸리는 컷만 재생성(후처리 합성 금지, 철칙 9).
 
 ## C7 카드뉴스
@@ -69,7 +76,7 @@
 - **미감 라우팅 2모드** — 요청 성격으로 먼저 가른다:
   - **정보성 후킹**(뉴스·꿀팁·리스트): 아래 `sns_cover` 밀도 문법.
   - **홍보판촉물**("홍보물/판촉물/브랜드 느낌/디자인 잘된/제품 홍보"): 컷타입 `promo_poster` → **`promo-router.md`에서 패턴 선택**(기본 P3 오버사이즈 크롭+오클루전·P4 컬러 블로킹 캠페인), 해당 `promo/Pn-*.md` 하나만 로드. 밀도·3D 클레이·배지 남발 금지 — 타이포 구조 + 2~3색 하드 락 + 마감 디바이스가 문법.
-- **SNS 썸네일 문법(`sns_cover` 기본)** — 피드에서 멈추게 하는 건 여백이 아니라 밀도다(실측: 매거진 여백형은 나이브 고밀도 컷에 짐). 단 이 밀도 문법은 정보성 전용 — 홍보판촉물에 쓰면 미감이 죽는다.
+- **SNS 썸네일 문법(`sns_cover` 기본) — 밀도가 기본값.** 피드에서 멈추게 하는 건 여백이 아니라 밀도다(실측: 매거진 여백형은 나이브 고밀도 컷에 짐). 단 이 밀도 문법은 정보성 전용 — 홍보판촉물에 쓰면 미감이 죽는다.
   - 초대형 헤드라인이 **상단 40% 이상**, 핵심 키워드는 색 교체·형광 하이라이트·박스 반전으로 분리
   - 배경은 **2톤 색 블로킹**(밝은 필드 + 딥 톤 바닥) 또는 두꺼운 프레임 밴드, 브랜드 팔레트 3색 고정
   - **3D 입체 히어로 오브젝트 1개**(soft clay/plastic 렌더) + 주제 소품 3~5개(동전·계산기·영수증 류)를 하단 존에 — R축 "눈이 여기저기 튀어다니는" 드롭인과 결합해 볼거리 밀도 확보

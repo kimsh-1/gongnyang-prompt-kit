@@ -1,57 +1,75 @@
 ---
 name: image-prompt
-version: "2.3.0"
-description: 막연한 요청을 gpt-image-2(Codex `$imagegen`) 완성 프롬프트로 컴파일하는 스킬. 검증된 규칙 — 티어드 네거티브(기본 전부 긍정형+극소수 화이트리스트 2종), 앞 브래킷 금지·끝 AR 토큰만, 장비는 결과로 환원, HEX 명시, 1행=1컷, 사이즈락 6종, C1~C12 플레이북, 화보 Format B(플랫 콤마형), 시네마틱 키아트(C11·그림자서사 shadow_narrative), 프레젠테이션/슬라이드 덱(C12), 룩 프리셋 9종(홍대 인디 L9 포함), 홍보판촉물 그래픽 문법 P1~P8(타이포-마스크·타이포-환경·오클루전·컬러블로킹 캠페인·메타 UI 디바이스·스트리트 콜라주·에디토리얼 회전축·모노크롬 스테이징), 컨셉 변수 축(미학 사조 M1~M10·몸 반응 번역·모순쌍 레이어 분리·타이포 아트 T1~T5(글자 안의 세계 포함)·컬러 번역), 타이포/글자배치(영역·롤라벨·그리드), jsonl 스키마, 검증 스크립트. 트리거 — "공냥 프롬프트", "공냥 프롬프트 킷", "이미지 스킬", "공냥이미지스킬", "gn-image", "gpt-image-2 프롬프트", "이미지 프롬프트 써줘", "화보 프롬프트", "키아트", "글자 배치", "타이포 지정", "프롬프트 라이브러리", "포스터/카드뉴스/제품도감/만화 프롬프트", "홍보물/판촉물/홍보이미지 프롬프트", "프레젠테이션/슬라이드/피피티 이미지", "발표자료 덱", "프롬프트 jsonl 만들어", "프롬프트 컴파일", "시안 여러 개", "양산 컨셉", "차별화 컨셉", "컨셉부터 잡아줘". 후속 — "이 컷만 변형", "스타일 바꿔", "룩 바꿔", "사조 바꿔", "다른 사조로", "무드만 바꿔", "사이즈 맞춰", "한글 카피 넣어" 도 이 스킬. ※ 실제 대량 생성·스폰은 [codex-imagegen]. 이 스킬은 "프롬프트를 어떻게 쓰느냐".
+version: "3.0.0"
+description: 막연한 요청을 gpt-image-2(Codex `$imagegen`) 완성 프롬프트로 컴파일. 커버 — 카테고리 C1~C12·화보 Format B·홍보물 P1~P8·타이포 포스터 TP1~TP14·룩 L1~L9·컨셉 축 M/R/X/T·jsonl·검증기. 트리거 — "공냥 프롬프트", "이미지 프롬프트 써줘", "화보 프롬프트", "키아트", "타이포 포스터", "홍보물/판촉물", "포스터/카드뉴스/만화", "슬라이드/피피티 이미지", "글자 배치", "프롬프트 jsonl", "컨셉부터 잡아줘", "시안 여러 개". ※ 생성·양산은 [codex-imagegen].
 ---
 
 # 🐾 공냥 프롬프트 킷 VOL.2 — gpt-image-2 프롬프트 컴파일러
 
-거칠고 모호한 요청을 다운스트림 이미지 툴(`$imagegen`)에 넘길 **완성 한국어 프로덕션 프롬프트**로 바꾼다. 이미지를 직접 생성하지는 않는다(생성·양산은 **[codex-imagegen]**). 깊은 내용은 필요할 때 `references/`를 읽는다.
+모호한 요청을 `$imagegen`용 완성 한국어 프로덕션 프롬프트로 컴파일한다. 생성·양산은 [codex-imagegen](1장은 codex 직접).
 
 ## 워크플로우
 
-1. 거친 요청에서 빠진 결정(카테고리·컷타입·피사체·스타일·구도·텍스트·AR)을 **추론해 채운다**. 취향 디테일은 묻지 말고 결정. **묻는 건** 정확한 한글 문구·브랜드명·민감 소재 정도.
-2. 카테고리/컷타입이 잡히면 `references/category-patterns.md`(C1~C12)를 본다. 포맷 라우팅(아래 §포맷 A/포맷 B)으로 A/B를 정한다. 무드 요청("있어보이게"·"럭셔리하게"·"영화처럼")은 `references/look-presets.md`에서 프리셋 1개를 골라 드롭인. **홍보판촉물·홍보이미지·브랜드 포스터 요청("홍보물 뽑아줘"·"판촉물 느낌"·"디자인 잘된 포스터")은 `references/promo-router.md`에서 패턴 1개를 고르고 해당 `references/promo/Pn-*.md` 하나만 읽어 레이아웃 골격으로** — 카드뉴스 밀도 문법으로 홍보물을 만들면 미감이 죽는다(C7 미감 라우팅 2모드). 시안 다변화·양산 컨셉·"차별화되게"·"컨셉부터" 요청은 `references/concept-axes.md`의 변수 축(사조 M·몸 반응 R·모순쌍 X·타이포 아트 T·컬러 번역)에서 축 1개를 골라 변주.
-3. 아래 **철칙**을 지켜 작성, 끝에 `AR` 토큰.
-4. 고가치 산출물은 응답 전 `node scripts/check_prompt.mjs <file>`로 검증(`ok:true` 확인).
-5. 생성으로 이어지면 **컴파일된 프롬프트만** 넘긴다(거친 원문은 안 넘김).
+1. 빠진 결정(카테고리·컷타입·피사체·스타일·구도·텍스트·AR)은 추론해 채운다. 묻는 건 한글 문구 원문·브랜드명·민감 소재뿐.
+2. 라우팅 표에서 읽을 파일 결정, 포맷은 §포맷 A/B.
+3. 철칙 9개를 지켜 작성, 끝에 `AR` 토큰.
+4. 고가치 산출물은 응답 전 `node scripts/check_prompt.mjs` 검증(`ok:true`).
+5. 생성 연계 시 컴파일된 프롬프트만 넘긴다(거친 원문 금지).
 
-**거친 입력 확장 예:** "포스터 하나"→`C3`(타이틀 위계·여백·팔레트·AR), "화보 한 장"→`C1` 포맷 B(단독 인물 플랫 단문), "드라마 키아트"→`C11`(타이틀 negative space·장르 광 레시피), "귀여운 아이콘"→`C9`(오브젝트·재질·베벨·배경, "텍스트 없음"), "제품 소개"→`C4`(히어로·콜아웃·리더선), "만화 느낌"→`C10`(패널·거터·말풍선·선화), "발표자료/피피티"→`C12`(덱 DNA 블록·16:9 고정·슬라이드 타입·룩 프리셋).
+확장 예: 포스터→C3·화보→C1 B·키아트→C11·아이콘→C9("텍스트 없음")·제품→C4·만화→C10·피피티→C12(16:9).
 
-**출력 계약:** 단일 요청 → 본문 + 끝 `AR x:y`만(설명 없이). 다중 → 엔트리당 `Title / Category(Cn) / Cut type / Prompt`. 생성 요청 → 조용히 컴파일 후 이미지 툴 호출.
+출력 계약: 단일=본문+끝 `AR x:y`만(설명 없이) · 다중=엔트리당 `Title/Category(Cn)/Cut type/Prompt` · 생성 요청=조용히 컴파일 후 툴 호출.
 
-## 철칙 — 절대 어기지 말 것
+## 라우팅 표 (유일 라우팅 지점)
 
-1. **앞머리 `[AR x:y SIZE wxh]` 브래킷 금지.** size는 API 파라미터(jsonl `size`)로만. 프롬프트엔 **끝에 `AR x:y` 토큰 하나만**. 슬롯 토큰 `[PERSONA_LOCK]` 류는 **작성 단계 전용** — 최종 프롬프트에 브래킷이 잔존하면 실격(검증기 `E-SLOT-LEAK`).
-2. **네거티브 기본 금지 + 화이트리스트 2종.** gpt-image-2는 장면 네거티브를 오히려 렌더한다 → **장면 배제는 여전히 전부 긍정형**(군중→"프레임 안엔 인물 한 명, 단독", 배경→"깨끗한 단색 배경", 워터마크→"브랜드 없는 클린 마감"). 예외는 아래 두 레인뿐이며, 이는 우회가 아니라 **컴플라이언스 스티어링**(정책 적합성을 프롬프트에 명시)이다.
+| 요청 신호 | 카테고리/포맷 | 읽을 파일 |
+|---|---|---|
+| 단독 인물 화보·에디토리얼 | C1·Format B | `references/editorial-hwabo.md` (룩북·시퀀스·패션 21종 +`references/style-taxonomy.md`) |
+| 타이포 포스터·글자가 곧 이미지 | TP1~TP14 | `references/typo-poster-router.md`→`references/typo-poster/TPn-*.md` 1개 |
+| 홍보판촉물·브랜드 포스터·"디자인 잘된 포스터" | P1~P8 | `references/promo-router.md`→`references/promo/Pn-*.md` 1개. 카드뉴스 밀도 문법 금지(미감 사망) |
+| 포스터·키아트·인포그래픽·카드뉴스·만화·도감·아이콘·뷰티·캠페인·목업 | C2~C11 | `references/category-patterns.md` 해당 §. C6·C7=밀도 기본값·돌파 전술 §C6 |
+| 프레젠테이션·슬라이드 덱 | C12 | `references/category-patterns.md` §C12 |
+| 무드("있어보이게"·"럭셔리"·"영화처럼") | 룩 L1~L9 | `references/look-presets.md` 프리셋 1개 드롭인 |
+| 시안 다변화·양산 컨셉·"차별화"·"컨셉부터" | M/R/X/T축 | `references/concept-axes.md` 축 1개 변주 |
+| 글자 배치·폰트·그리드·밀집 텍스트 | — | `references/typography-layout.md` |
+| 카메라·조명·색 어휘 | — | `references/photo-vocab.md` |
+| jsonl 배치·모델 팩트·완성 예제·codex 골격·8섹션 변형 | — | `references/jsonl-and-examples.md` |
+
+라우터(P/TP)는 패턴 1개 선택 후 해당 파일 **하나만** 로드.
+
+## 철칙
+
+1. **앞머리 `[AR x:y SIZE wxh]` 브래킷 금지.** size는 API 파라미터(jsonl `size`)로만, 프롬프트엔 끝 `AR x:y` 하나만. 슬롯 토큰(`[PERSONA_LOCK]` 류)은 작성 전용 — 잔존=실격(`E-SLOT-LEAK`).
+2. **장면 배제는 전부 긍정형** — gpt-image-2는 장면 네거티브를 오히려 렌더한다(군중→"인물 한 명, 단독", 배경→"깨끗한 단색 배경"). 예외는 두 레인뿐, 우회가 아닌 컴플라이언스 스티어링.
 
    | 티어 | 조건 | 허용 문구 |
    |---|---|---|
-   | **Tier-0 기본** | 항상 | all-positive. 부정문 0개 |
-   | **Tier-1 텍스트 렌더 가드** | 렌더 텍스트(따옴표 카피)가 실제로 있을 때만 | 화이트리스트 7종: `no extra words` · `no duplicate text` · `no invented glyphs` · `no watermark` · `no logo` · `no extra text` · `verbatim, no extra characters` |
-   | **Tier-2 화보 컴플라이언스 레인** | 명시 선언 시만(휴리스틱 승격 금지) | SAFETY_ASSERT(긍정형, 피사체절) + NEGATIVE_TAIL(AR 직전 정확히 1회) **페어** — 고정 문자열, 상세 `references/editorial-hwabo.md` |
+   | Tier-0 기본 | 항상 | all-positive, 부정문 0개 |
+   | Tier-1 텍스트 가드 | 렌더 텍스트 있을 때만 | 화이트리스트 7종: `no extra words` · `no duplicate text` · `no invented glyphs` · `no watermark` · `no logo` · `no extra text` · `verbatim, no extra characters` |
+   | Tier-2 화보 레인 | 명시 선언 시만(휴리스틱 승격 금지) | SAFETY_ASSERT(긍정형, 피사체절)+NEGATIVE_TAIL(AR 직전 1회) **페어** 구조 |
 
-   Tier-1 결합 공식(문서가 권장하는 유일한 방출형 1줄): `All text appears once, perfectly legible — no duplicate text, no extra words, no invented glyphs, no watermark.`
-   Tier-2 고정 문자열 — SAFETY_ASSERT: `adult Korean woman in her late 20s, 25+, original character, non-nude fashion editorial styling, fully opaque fabric, covered chest line, editorial upright pose` / NEGATIVE_TAIL: `no nudity, no nipple or genital exposure, no wardrobe malfunction, no extra people, no text, no watermark` (순서 보존 부분집합만 허용, tail 단독 사용 금지).
+   Tier-1 결합 공식(유일 방출형): `All text appears once, perfectly legible — no duplicate text, no extra words, no invented glyphs, no watermark.`
+   Tier-2 고정 문자열·페어 규칙(순서 보존 부분집합·tail 단독 금지) 정본 = `references/editorial-hwabo.md` §3(여기 안 싣음). `Negative:` 라벨은 전 티어 금지(`E-NEG-SECTION`).
 
    | 빼려는 것 | 레인 |
    |---|---|
-   | 장면 요소(사람·사물·배경·소품) | **긍정형 재서술** (Tier-0) |
-   | 텍스트 렌더 결함(중복·유령 글자·워터마크) | **Tier-1** 화이트리스트 |
-   | 정책 안전 단언(화보) | **Tier-2** 페어 |
+   | 장면 요소(사람·사물·배경·소품) | 긍정형 재서술(Tier-0) |
+   | 텍스트 렌더 결함(중복·유령·워터마크) | Tier-1 화이트리스트 |
+   | 정책 안전 단언(화보) | Tier-2 페어 |
 
-   `Negative:` 라벨 섹션은 **전 티어 금지**(`E-NEG-SECTION`).
-3. **SD-era 폐기 어휘 금지.** `masterpiece/best quality/8k/4k/uhd/trending on artstation/ultra-detailed/highly detailed/sharp focus`. 가중치 `(word:1.3)`, 슬래시 플래그 `--ar/--v`, 본문 `§`, 빈 형용사 `멋지게/감성적으로/고급스럽게/세련되게/beautiful/stunning`. **무대 지정도 동급 노이즈** — "어워드 수준으로/전문가처럼/최고급"은 기준이 프롬프트 밖에 있어 평균값만 나온다. 수치(여백 %·컬러 60/30/10·위계 단수)·몸 반응·구체 예시로 환원(→ `references/concept-axes.md` §죽은 단어 환원).
-4. **장비 스펙은 노이즈 → 결과로 환원.** 카메라 EXIF·조명 장비명 대신 결과: "shallow DoF, background falls off softly", "long soft-edged shadows", "warm key + cool rim". (패션의 `Lens character:`·`Director signature:` 라인은 '결과+레퍼런스 앵커'라 예외.)
-5. **수치 명세는 박는다.** HEX 팔레트(컷당 3~5색), 켈빈, `key:fill 1:2` 비율 → 품질↑.
-6. **1행 = 1컷 = 1 호출.** 한 캔버스 그리드/매트릭스 금지. 여러 컷은 N개 별도 행.
+3. **SD-era 폐기 어휘 금지.** `masterpiece/best quality/8k/4k/uhd/trending on artstation/ultra-detailed/highly detailed/sharp focus`, 가중치 `(word:1.3)`, `--ar/--v`, 본문 `§`, 빈 형용사(멋지게/감성적으로/고급스럽게/세련되게/beautiful/stunning).
+   무대 지정("어워드 수준/전문가처럼/최고급")도 동급, 기준이 프롬프트 밖. 수치(여백 %·60/30/10·위계 단수)·몸 반응·구체 예시로 환원(concept-axes.md §죽은 단어 환원).
+4. **장비 스펙→결과로 환원.** EXIF·장비명 대신 "shallow DoF, background falls off softly"·"warm key + cool rim". (패션 `Lens character:`·`Director signature:`는 결과+앵커라 예외.)
+5. **수치는 박는다.** HEX 팔레트(컷당 3~5색), 켈빈, `key:fill 1:2` 비율.
+6. **1행 = 1컷 = 1 호출.** 한 캔버스 그리드/매트릭스 금지, 여러 컷은 N행.
 7. **이상적 피부 금지** → "natural skin texture, visible pores, subtle film grain".
-8. **실재 상표·인물 참조 금지** — 가상 브랜드/페르소나.
-9. **생성 후 글자 후처리 절대 금지.** 모든 텍스트는 **프롬프트로 이미지 안에서** 렌더한다(따옴표 카피 + 롤라벨 + 자유 작성 존). 생성된 PNG 위에 코드로 글자를 얹는 합성(PIL/Pillow·ImageMagick·SVG/HTML 오버레이·캔버스 캡처 등) 일절 금지 — 폰트·커닝·톤이 원본과 겉돌아 결과물을 망친다. 글자가 틀리면 후처리로 때우지 말고 **프롬프트를 고쳐 재생성**(타이포 구체화 → `2048x2048` + quality high → 카피 수 축소 순).
+8. **실재 상표·인물 참조 금지**, 가상 브랜드/페르소나로.
+9. **생성 후 글자 후처리 절대 금지.** 텍스트는 프롬프트로 이미지 안에서 렌더(따옴표 카피+롤라벨+자유 작성 존). PNG 위 코드 합성(PIL·ImageMagick·SVG/HTML·캔버스) 일절 금지, 폰트·커닝·톤이 겉돈다.
+   글자 오류는 프롬프트 수정 후 재생성(타이포 구체화→`2048x2048`+quality high→카피 축소 순).
 
-## 마스터 템플릿 (포맷 A 기본 6섹션 + 끝 AR)
+## 마스터 템플릿 (포맷 A 6섹션)
 
-순수 서술 + HEX. 첫 섹션이 attention을 가장 강하게 받으니 **핵심 시각정보를 최상단에**. 헤더 `# 1. Scene` 식 OK, 본문에 `§` 금지.
+순수 서술+HEX. 핵심 시각정보 최상단(첫 섹션=attention 최강). 헤더 `# 1. Scene` OK, 본문 `§` 금지.
 
 | # | 섹션 | 무엇을 / 분량 |
 |---|---|---|
@@ -63,17 +81,15 @@ description: 막연한 요청을 gpt-image-2(Codex `$imagegen`) 완성 프롬프
 | 6 | **Text-in-image** (선택) | `"따옴표 카피"` + 폰트·크기·위치 + legibility 1회. 0~25어 |
 | — | 트레일링 | 끝에 `AR x:y` 토큰만 |
 
-> jsonl 스키마·완성 예제·codex 호출 골격·8섹션 변형 → **`references/jsonl-and-examples.md`**.
-
 ## 포맷 A / 포맷 B
 
-- **포맷 A — 라벨 6섹션** (위 표 그대로): 포스터·키아트·인포그래픽·도감·카드뉴스·만화 등 **구조물** 전반.
-- **포맷 B — 화보 플랫 콤마형 단문**: 라벨 없이 콤마로 잇는 한 문단. 슬롯 순서 고정 — 피사체→얼굴→헤어→장르앵커("한국 남성지풍 클린 화보 컷")→장면/포즈→의상→구도→조명→팔레트 `#HEX`×3~5→질감→[Tier-2 tail]→`AR x:y`. 분량 **350~450자**, 기본 AR `2:3`(1024x1536).
-- **라우팅**: 단독 인물 화보/글래머 에디토리얼 → **B**(슬롯 12종·Tier-2 문구 상세는 `references/editorial-hwabo.md`), 그 외 전부 → **A**.
+- **포맷 A — 라벨 6섹션**(위 표): 구조물 전반(포스터·키아트·인포그래픽·도감·카드뉴스·만화 등).
+- **포맷 B — 화보 플랫 콤마형 단문**: 라벨 없이 콤마 한 문단, 350~450자, 기본 AR `2:3`(1024x1536). 슬롯 12종 순서·Tier-2 → editorial-hwabo.md.
+- 라우팅: 단독 인물 화보/글래머 에디토리얼→B, 그 외 전부→A.
 
 ## 사이즈 락 (codex 러너 6종)
 
-API는 커스텀이지만 **codex(`$imagegen`) 경로는 6종만** 안전. `auto` 금지, 챕터 내 통일.
+API는 커스텀, codex(`$imagegen`) 경로는 6종만 안전. `auto` 금지, 챕터 내 통일.
 
 | ar | size | ar | size |
 |---|---|---|---|
@@ -81,56 +97,22 @@ API는 커스텀이지만 **codex(`$imagegen`) 경로는 6종만** 안전. `auto
 | 2:3 / 3:4 / 4:5 | `1024x1536` | 9:16 | `1024x1792` |
 | 3:2 / 4:3 | `1536x1024` | 밀집/다컷 | `2048x2048` |
 
-`2:3`만 정확비, `3:4`·`4:5`는 세로 근사 정규화. 비지원 값(`1024x1280` 등)도 가까운 6종으로.
-> API 하드 제약(최대변 3840·16배수·비율 ≤3:1·총픽셀 655,360~8,294,400)·투명 배경은 gpt-image-2 미지원(gpt-image-1.5 폴백) → `references/jsonl-and-examples.md` 모델 팩트.
+`2:3`만 정확비, `3:4`·`4:5`는 세로 근사. 비지원 값(`1024x1280` 등)도 가까운 6종으로.
+> API 하드 제약·투명 배경(1.5 폴백): jsonl-and-examples.md §1.
 
-## 텍스트 렌더 (gpt-image-2 강점, 한글 포함)
+## 텍스트 렌더 요점
 
-- 정확한 카피를 **따옴표로 고정**: `text reads "오늘 더 따뜻해요"`. 폰트·크기·위치·HEX 지정.
-- 카피 2개 이상이면 **롤 라벨 블록**으로 분리: `headline "봄밤 야시장"` / `subhead "4.20 SAT 6PM"` / `callout "선착순 100명"` — 롤마다 위치·크기·폰트를 따로 박는다.
-- **KO/EN 언어 라벨 분리**: 한 따옴표 문자열 안에 한글+영문 혼합 금지. 렌더 텍스트는 **한 줄 한 언어**.
-- 렌더 텍스트가 있으면 Tier-1 결합 공식 1회(철칙 #2). 같은 카피 두 번 쓰면 두 번 렌더하니 금지.
-- **한글 스펠아웃 금지** — 하이픈 풀어쓰기는 하이픈이 글자로 렌더됨(실측). 정확도 레버는 **캔버스 크기**(2048 실측 12/12 만점, `references/typography-layout.md` §7). 영문 조어만 ALL CAPS/스펠아웃 최후수단. 렌더 라벨엔 **실제 문구만**(플레이스홀더 금지).
-- **밀집 텍스트**(카피 블록 3개+ 또는 소형 글자)는 `quality: high` + **큰 변 페어링**(1536/1792 긴 변 또는 `2048x2048`).
-- 영역 문법·폰트 어휘·그리드 상세 → **`references/typography-layout.md`**.
-
-## 국문/영문 혼용
-
-- **한국어가 이기는 곳**: 장면 서사 골격·무드 형용·문화 부하 명사(남성지풍, 청순, 물오른)·렌더될 한글 카피.
-- **영어가 이기는 곳**: 기법 토큰(shallow DoF, rim light, key:fill, film emulation)·티어 고정 문구(Tier-1/Tier-2 캐노니컬).
-- **하이브리드** = 한국어 골격 문장에 영어 기법 토큰 삽입. 렌더 텍스트는 한 줄 한 언어.
-- 상세 → **`references/photo-vocab.md` §8**.
-
-## 카테고리 라우팅 (C1~C12)
-
-컷타입·기본 AR·필수 디테일·공통 DNA·만화 A/B 전략은 **`references/category-patterns.md`**, 패션 21종은 **`references/style-taxonomy.md`**, 무드→룩은 **`references/look-presets.md`**. (사용 빈도순 배치.)
-
-| C1 패션/화보 | C11 시네마틱 키아트 | C3 한국어 포스터 | C4 제품 도감 |
-|---|---|---|---|
-| **C2 뷰티** | **C5 캠페인** | **C6 인포그래픽** | **C7 카드뉴스** |
-| **C8 브랜딩 목업** | **C9 3D 아이콘** | **C10 만화** | **C12 프레젠테이션 덱** |
-
-복잡 도표·도해는 **회피하지 말고 정면 시도**(C6 돌파 전술 + 유형별 레시피 7종: 분기 플로우·네트워크·계층·사이클·단면·비교표·데이터 차트) — 연결·노드·수치를 문장으로 전부 구체 지정하고, 수치는 큰 타이포 + 비율감 도형 이중 앵커. 안 나오면 단순화 대신 축 변경(레이아웃 구체화 → 2048 고밀도 → 컷 분할). 고밀도 텍스트 슬라이드는 **렌더 한글 400~800자도 가능**(실측 40컷) — 세로 높은 비율(16:9·2:3) + 자유 작성 존이 레버, 이 밀도에선 소규모 오탈자·간헐 뭉개짐이 정상이니 치명 카피만 따옴표로 지키고 걸리는 컷만 재생성. C6·C7은 **밀도가 기본값** — 미니멀 플로우·매거진 여백형은 요청이 명시할 때만(실측: 나이브 고밀도 컷에 짐).
+- 카피는 따옴표 고정+폰트·크기·위치·HEX, 한 줄 한 언어(한글+영문 혼합 금지). 카피 2개↑는 롤 라벨(headline/subhead/callout) 분리, 롤별 위치·크기·폰트 지정.
+- 렌더 텍스트엔 Tier-1 결합 공식 1회(철칙 #2), 같은 카피 2회 표기=2회 렌더라 금지.
+- 한글 스펠아웃 금지(하이픈이 글자로 렌더). 정확도 레버=캔버스 크기(2048 실측 12/12). 영문 조어만 ALL CAPS 최후수단. 라벨엔 실제 문구만.
+- 밀집 텍스트(카피 3블록+/소형 글자)는 `quality: high`+큰 변 페어링(1536/1792·`2048x2048`).
+- 국문/영문 혼용: 한국어=서사·무드·문화 명사·한글 카피, 영어=기법 토큰·티어 문구, 하이브리드=한국어 골격+영어 토큰. 상세 photo-vocab.md §8.
 
 ## 검증기
 
-응답·생성 전 `node scripts/check_prompt.mjs <file>` (또는 프롬프트를 stdin 파이프). **티어 인지형**:
+응답·생성 전 `node scripts/check_prompt.mjs <file>`(stdin 가능).
 
-- `--tier <0|1|2>` 티어 강제 / `--jsonl <file>` 레코드 전체 검증 / `--api` E-SIZE-LOCK→warning 강등(하드 제약은 유지) / `--test` fixtures 셀프테스트.
-- 티어 결정 우선순위: `--tier` > jsonl `tier` 필드 > jsonl `lane`("editorial"→2) > 휴리스틱(렌더 텍스트 존재→1, 아니면 0). **Tier-2는 휴리스틱으로 승격 불가.**
-- 출력: `{ok, format, tier, errors:[{code,msg,hint?}], warnings:[{code,msg}]}` — errors 0이어야 exit 0.
-- 에러 예: `E-NEG-TIER`(티어 미선언 상태에서 상위 티어 문구), `E-SLOT-LEAK`(슬롯 토큰 잔존), `E-SIZE-LOCK`(size 6종 밖). 그 외 네거티브·앞브래킷·SD폐기어휘·가중치·슬래시플래그·끝AR누락도 error.
-
-## 레퍼런스
-
-- **`references/category-patterns.md`** — C1~C12 컷타입·기본 AR·필수 디테일·공통 DNA·만화 A/B·덱 DNA.
-- **`references/look-presets.md`** — 프리미엄 룩 프리셋 9종(럭셔리·시네마틱·미니멀 프로덕트·스위스 타이포·다크 테크·레트로 인쇄·파스텔·골드 포일·홍대 인디) 드롭인 블록.
-- **`references/promo-router.md`** — 홍보판촉물 P1~P8 라우터(요청→패턴→파일 표·공통 원칙·마감 디바이스·교배·C7/C5 라우팅). 패턴 상세는 **`references/promo/Pn-*.md`** 개별 파일(고른 것 하나만 로드): P1 타이포-마스크·P2 타이포-환경·P3 오버사이즈 크롭+오클루전·P4 컬러 블로킹 캠페인·P5 메타 UI·P6 스트리트 콜라주·P7 에디토리얼 회전축·P8 모노크롬 스테이징.
-- **`references/typo-poster-router.md`** — 타이포그래피 포스터 TP1~TP14 라우터(요청→패턴→파일 표·공통 DNA·경계·교배·한글 크로스 규칙). 패턴 상세는 **`references/typo-poster/TPn-*.md`** 개별 파일(고른 것 하나만 로드): TP1 포토 마스킹·TP2 텍스트 터널·TP3 타입 건축·TP4 광학 현상·TP5 물성 파괴·TP6 스위스 키네틱·TP7 재질 조각·TP8 리퀴드 크롬·TP9 인플레이터블·TP10 옵아트 패턴·TP11 애시드·TP12 퓨처 미디벌·TP13 아나모픽·TP14 미크로그래피.
-- **`references/concept-axes.md`** — 컨셉 변수 축: 미학 사조 10종(M1~M10 조형언어 분해)·몸 반응 번역 8종(R축)·모순쌍 레이어 분리(X축)·컬러 번역(음악·장면→팔레트)·타이포 아트 5기법(T1~T5, 글자 안의 세계)·컨셉 프리플라이트·양산 스윕 패턴.
-- **`references/jsonl-and-examples.md`** — jsonl 스키마(format/tier/lane)·모델 팩트·완성 예제·codex 골격·8섹션 변형.
-- **`references/typography-layout.md`** — 영역 문법·롤 라벨·폰트 어휘·정확 문자열·그리드.
-- **`references/editorial-hwabo.md`** — 화보 Format B·슬롯 12종·Tier-2 문구(로컬 상세판 있으면 우선).
-- **`references/photo-vocab.md`** — 카메라·조명·필름·구도·색 어휘(결과 기반) + 국문/영문 혼용 규칙(§8).
-- **`references/style-taxonomy.md`** — 패션 21종 + persona DNA + MASTER_TEMPLATE_V4.
-- 생성·양산: **[codex-imagegen]**. 단일 1장은 그냥 codex 직접.
+- `--tier <0|1|2>` 강제 / `--jsonl` 레코드 / `--api` E-SIZE-LOCK→warning(하드 제약 유지) / `--test` 셀프테스트.
+- 티어 우선순위: `--tier` > jsonl `tier` > `lane`("editorial"→2) > 휴리스틱(렌더 텍스트→1, 없으면 0). Tier-2는 휴리스틱 승격 불가.
+- 출력 `{ok, format, tier, errors[{code,msg,hint?}], warnings[{code,msg}]}`, errors 0=exit 0.
+- 에러: `E-NEG-TIER`(미선언 상위 티어)·`E-SLOT-LEAK`·`E-SIZE-LOCK`, 네거티브·앞브래킷·SD어휘·가중치·슬래시플래그·끝AR누락.
