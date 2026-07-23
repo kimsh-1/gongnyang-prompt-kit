@@ -36,6 +36,7 @@ description: 막연한 요청을 gpt-image-2(Codex `$imagegen`) 완성 프롬프
 | jsonl 배치·모델 팩트·완성 예제·codex 골격·8섹션 변형 | — | `references/jsonl-and-examples.md` |
 
 라우터(P/TP)는 패턴 1개 선택 후 해당 파일 **하나만** 로드.
+복수 행이 동시에 매칭되면 **위쪽 행 우선**(표 순서 = 우선순위) — 경계 케이스는 각 라우터의 경계·교차 참조 절이 우선한다.
 
 ## 철칙
 

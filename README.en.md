@@ -8,7 +8,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](LICENSE) &nbsp;![Claude Code Skill](https://img.shields.io/badge/Claude_Code-Skill-d97757) &nbsp;![target: gpt-image-2](https://img.shields.io/badge/target-gpt--image--2-1E4D40) &nbsp;![library: C1-C12 + P1-P8 + TP1-TP14](https://img.shields.io/badge/library-C1--C12_+_P1--P8_+_TP1--TP14-C19A6B)
 
-[Demo site](https://kimsh-1.github.io/gongnyang-prompt-kit) · [Install](#quickstart) · [Routing](#routing) · [한국어](README.md) · [日本語](README.ja.md)
+[Demo site](https://gongnyang.github.io/gongnyang-prompt-kit) · [Install](#quickstart) · [Routing](#routing) · [한국어](README.md) · [日本語](README.ja.md)
 
 </div>
 
@@ -23,7 +23,7 @@
 - **Naive prompts lose** — feed in a one-liner like "make me a poster" as-is, and the model hands back a result exactly as vague as the request.
 - **The compiler approach** — the request signal maps to one row of a routing table, and that single pattern produces a complete Korean production prompt ready to drop straight into generation.
 - **Validator gate** — negatives outside the whitelist, deprecated SD vocabulary, and size-lock violations are caught as `error`s before anything reaches generation.
-- **Generation is out of scope** — for bulk generation use the `codex-imagegen` skill in [codex-fleet](https://github.com/kimsh-1/codex-fleet); for a single image, feed the prompt straight to `codex`.
+- **Generation is out of scope** — for bulk generation use the `codex-imagegen` skill in [codex-fleet](https://github.com/gongnyang/codex-fleet); for a single image, feed the prompt straight to `codex`.
 
 ## The only difference is the prompt
 
@@ -57,7 +57,7 @@ The full compile record is in [`examples/showcase.jsonl`](examples/showcase.json
 ## Quickstart
 
 ```bash
-git clone https://github.com/kimsh-1/gongnyang-prompt-kit
+git clone https://github.com/gongnyang/gongnyang-prompt-kit
 ln -s "$PWD/gongnyang-prompt-kit/skills/image-prompt" ~/.claude/skills/image-prompt
 ```
 
@@ -129,7 +129,7 @@ These are not rules for making images come out well — they are rules that bloc
 | **Occlusion × shadow narrative (집 "home")** | **Masking × typo-environment (폭풍 "storm")** | **L9 shadow narrative (film camera)** |
 | ![Occlusion × shadow narrative — 집 "home"](docs/showcase/PR07.webp) | ![Masking × typo-environment — 폭풍 "storm"](docs/showcase/PR08.webp) | ![L9 shadow narrative — film camera](docs/showcase/HD01.webp) |
 
-Full gallery (21 before/after pairs · 14 TP patterns · 12 P cuts · 12 L9 cuts) → [demo site](https://kimsh-1.github.io/gongnyang-prompt-kit) · representative dense-diagram cuts live in [`examples/diagram-gallery/`](examples/diagram-gallery/)
+Full gallery (21 before/after pairs · 14 TP patterns · 12 P cuts · 12 L9 cuts) → [demo site](https://gongnyang.github.io/gongnyang-prompt-kit) · representative dense-diagram cuts live in [`examples/diagram-gallery/`](examples/diagram-gallery/)
 
 ## Structure, releases & license
 
@@ -161,10 +161,10 @@ skills/image-prompt/
 
 </details>
 
-Change history & verification measurements → [GitHub Releases](https://github.com/kimsh-1/gongnyang-prompt-kit/releases) · release checklist [`RELEASING.md`](RELEASING.md) · license [MIT](LICENSE)
+Change history & verification measurements → [GitHub Releases](https://github.com/gongnyang/gongnyang-prompt-kit/releases) · release checklist [`RELEASING.md`](RELEASING.md) · license [MIT](LICENSE)
 
 ---
 
 <div align="center">
-<sub>🐾 vague one-liner → finished prompt — <a href="https://kimsh-1.github.io/gongnyang-prompt-kit">kimsh-1.github.io/gongnyang-prompt-kit</a></sub>
+<sub>🐾 vague one-liner → finished prompt — <a href="https://gongnyang.github.io/gongnyang-prompt-kit">gongnyang.github.io/gongnyang-prompt-kit</a></sub>
 </div>
