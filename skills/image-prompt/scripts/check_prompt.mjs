@@ -1,13 +1,17 @@
 #!/usr/bin/env node
-// 공냥 프롬프트 킷 v2.0 검증기 — SPEC-FREEZE-v2 동결 스펙 준수. zero-dependency Node ESM.
+// 공냥 프롬프트 킷 검증기 (킷 v3.x 동봉) — SPEC-FREEZE-v2 동결 스펙 준수. zero-dependency Node ESM.
 // 사용: node check_prompt.mjs <file> (stdin 파이프 가능) | --jsonl <file> | --tier <0|1|2> | --api | --test
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const SIZE_WHITELIST = ["1024x1024","1536x1024","1024x1536","1792x1024","1024x1792","2048x2048"];
+// 21:9는 사이즈락 6종 밖(codex 실측 기록 전용) — --api 모드에서만 ar↔size 정합 검사용으로 존재
 const AR_SIZE_MAP = { "1:1":["1024x1024","2048x2048"], "2:3":["1024x1536"], "3:4":["1024x1536"],
-  "4:5":["1024x1536"], "3:2":["1536x1024"], "4:3":["1536x1024"], "16:9":["1792x1024"], "9:16":["1024x1792"] };
+  "4:5":["1024x1536"], "3:2":["1536x1024"], "4:3":["1536x1024"], "16:9":["1792x1024"], "9:16":["1024x1792"],
+  "21:9":["2048x896"] };
+const QUALITY_ENUM = ["high","medium","low"];
+const CATEGORY_RE = /^C([1-9]|1[0-2])$/;
 const HARD = { maxEdge:3840, multiple:16, maxRatio:3, minPx:655360, maxPx:8294400 };
 const TIER1 = ["verbatim, no extra characters","no duplicate text","no invented glyphs","no extra words","no extra text","no watermark","no logo"];
 const TAIL = ["no nudity","no nipple or genital exposure","no wardrobe malfunction","no extra people","no text","no watermark"];
@@ -39,7 +43,7 @@ function detectFormat(p) {
   return "A";
 }
 
-function checkNegatives(p, tier, renderText, errors) {
+function checkNegatives(p, tier, renderText, errors, warnings) {
   if (/\bNegative\s*:/i.test(p)) err(errors, "E-NEG-SECTION", "`Negative:` 섹션 금지 — 전부 긍정형 서술로.");
   let scan = p.replace(/negative\s+space/gi, ""); // 디자인 여백 용어는 허용
   const alt = TAIL.map(esc).join("|");
@@ -69,6 +73,12 @@ function checkNegatives(p, tier, renderText, errors) {
     if (tier < 1) err(errors, "E-NEG-TIER", `티어 0에서 Tier-1 화이트리스트 문구 사용(${t1.join("; ")}) — --tier 1 선언 필요.`);
     else if (!renderText) err(errors, "E-NEG-TIER", "렌더 텍스트(따옴표 카피)가 없는데 Tier-1 문구 사용 — 렌더 텍스트가 실제로 있을 때만 유효.");
     for (const ph of t1) scan = scan.replace(new RegExp(esc(ph), "gi"), " ");
+  }
+  // 한국어 지시형 부정문(경고) — 상태 서술형("텍스트 없음")은 독트린상 긍정형으로 허용, 지시형만 잡는다
+  const koNeg = scan.match(/[가-힣A-Za-z0-9 ]{0,12}(?:금지|하지 ?마|하지 않|없어야|없도록|제외하고|빼고)/g);
+  if (koNeg) {
+    const uniqKo = [...new Set(koNeg.map((s) => s.trim()))].slice(0, 3);
+    err(warnings, "W-NEG-KO", `한국어 지시형 부정문 감지(${uniqKo.join(" / ")}) — 장면 배제는 긍정형 재서술(철칙 #2)이 안전(예: "군중 제외하고" → "인물 한 명, 단독").`);
   }
   const neg = scan.match(/\b(?:no|without|avoid|exclude|never|free of|devoid of|do not|don't)\s+[A-Za-z][A-Za-z'-]*(?:\s+[A-Za-z'-]+)?/gi);
   if (neg) {
@@ -117,7 +127,7 @@ function validateText(raw, opts = {}, rec = null) {
   if ((renderText || has(/(텍스트|한글|타이틀|부제|라벨|말풍선|내레이션|SFX|카피|문구)/)) && !has(/(또렷|가독|한 번씩만|1~2개만|legible|appears once)/))
     err(warnings, "W-TEXT-GUARD", "텍스트가 있는데 가독성/반복 가드가 없음 (예: \"모든 텍스트는 한 번씩만, 또렷하게\").");
 
-  checkNegatives(p, tier, renderText, errors);
+  checkNegatives(p, tier, renderText, errors, warnings);
 
   // ── 앞브래킷 / 슬롯 잔존 / SD 폐기 문법 (v1 유지) ──
   if (/^\[[^\]\n]*(\d+\s*:\s*\d+|SIZE|size)[^\]\n]*\]/.test(p.slice(0, 80))) err(errors, "E-HEAD-BRACKET", "앞머리 `[AR x:y SIZE wxh]` 브래킷 금지 — size는 API 파라미터, 프롬프트엔 끝의 `AR x:y`만.");
@@ -166,6 +176,14 @@ function validateRecord(rec, ids, opts) {
     if (rec[f] === undefined || rec[f] === null || rec[f] === "") err(errors, "E-REC-FIELD", `필수 필드 누락: ${f}.`);
   if (rec.id !== undefined) { if (ids.has(rec.id)) err(errors, "E-REC-DUPID", `중복 id: ${rec.id}.`); ids.add(rec.id); }
   if (rec.quality === "auto") err(errors, "E-REC-QUALITY", 'quality "auto" 금지 — high/medium/low를 명시.');
+  else if (rec.quality !== undefined && !QUALITY_ENUM.includes(rec.quality)) err(errors, "E-REC-QUALITY", `quality "${rec.quality}"는 허용값 밖(${QUALITY_ENUM.join("/")}).`);
+  if (typeof rec.category === "string" && rec.category && !CATEGORY_RE.test(rec.category)) err(errors, "E-REC-CATEGORY", `category "${rec.category}"는 C1~C12 밖.`);
+  if (rec.tier !== undefined && ![0, 1, 2].includes(rec.tier)) err(errors, "E-REC-TIER", `tier ${JSON.stringify(rec.tier)}는 0/1/2 밖.`);
+  if (rec.format !== undefined && rec.format !== "A" && rec.format !== "B") err(errors, "E-REC-FORMAT", `format "${rec.format}"는 "A"/"B" 밖.`);
+  if (typeof rec.ar === "string" && rec.ar && !/^\d+:\d+$/.test(rec.ar)) err(errors, "E-REC-AR", `ar "${rec.ar}"는 "x:y" 형식이 아님.`);
+  if (typeof rec.output_path === "string" && rec.output_path &&
+      (/^([A-Za-z]:[\\/]|[\\/])/.test(rec.output_path) || rec.output_path.split(/[\\/]/).includes("..")))
+    err(errors, "E-PATH-ESCAPE", `output_path "${rec.output_path}" — 절대 경로·상위 디렉토리 탈출(..) 금지, 작업 루트 하위 상대 경로만.`);
   if (typeof rec.size === "string") {
     if (!SIZE_WHITELIST.includes(rec.size)) {
       const msg = `size ${rec.size}는 6종 화이트리스트 밖.`, hint = `가장 가까운 허용 size: ${nearestSize(rec.size)}`;
@@ -176,6 +194,16 @@ function validateRecord(rec, ids, opts) {
   }
   if (rec.ar && rec.size && AR_SIZE_MAP[rec.ar] && !AR_SIZE_MAP[rec.ar].includes(rec.size))
     err(errors, "E-SIZE-AR", `ar ${rec.ar} ↔ size ${rec.size} 매핑 불일치(허용: ${AR_SIZE_MAP[rec.ar].join(", ")}).`);
+  if (rec.status === "approved") { // 문서 합격선(qa 평균 ≥4 AND text_accuracy ≥4)을 approved 레코드에 집행
+    const qa = rec.qa;
+    if (!qa || typeof qa !== "object") err(errors, "E-QA-GATE", "status approved인데 qa 4항목이 없음 — 합격선(평균 ≥4 AND text_accuracy ≥4) 검증 불가.");
+    else {
+      const vals = ["goal_fit", "text_accuracy", "material_realism", "layout"].map((k) => Number(qa[k]) || 0);
+      const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+      if (avg < 4 || (Number(qa.text_accuracy) || 0) < 4)
+        err(errors, "E-QA-GATE", `approved인데 합격선 미달 — qa 평균 ${avg.toFixed(2)}(≥4 필요), text_accuracy ${qa.text_accuracy}(≥4 필요).`);
+    }
+  }
   let t = { format: rec.format ?? null, tier: rec.tier ?? null };
   if (typeof rec.full_prompt === "string") {
     const m = rec.full_prompt.trim().match(/AR\s+(\d+)\s*:\s*(\d+)$/i);
@@ -201,6 +229,8 @@ function runJsonl(content, opts) {
     }
     results.push({ line: i + 1, ...validateRecord(rec, ids, opts) });
   });
+  if (results.length === 0)
+    results.push({ line: 0, id: null, ok: false, errors: [{ code: "E-REC-EMPTY", msg: "jsonl에 레코드가 0건 — 빈 배치는 실패로 처리." }], warnings: [] });
   const pass = results.filter((r) => r.ok).length;
   return { ok: pass === results.length, results, summary: { total: results.length, pass, fail: results.length - pass } };
 }

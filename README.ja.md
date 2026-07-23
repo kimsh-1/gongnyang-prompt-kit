@@ -8,7 +8,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](LICENSE) &nbsp;![Claude Code Skill](https://img.shields.io/badge/Claude_Code-Skill-d97757) &nbsp;![target: gpt-image-2](https://img.shields.io/badge/target-gpt--image--2-1E4D40) &nbsp;![library: C1-C12 + P1-P8 + TP1-TP14](https://img.shields.io/badge/library-C1--C12_+_P1--P8_+_TP1--TP14-C19A6B)
 
-[デモサイト](https://kimsh-1.github.io/gongnyang-prompt-kit) · [インストール](#quickstart) · [ルーティング](#ルーティング) · [한국어](README.md) · [English](README.en.md)
+[デモサイト](https://gongnyang.github.io/gongnyang-prompt-kit) · [インストール](#quickstart) · [ルーティング](#ルーティング) · [한국어](README.md) · [English](README.en.md)
 
 </div>
 
@@ -23,7 +23,7 @@
 - **ナイーブなプロンプトは負ける** — 「ポスターを1枚作って」程度のひと言をそのまま投入すると、モデルはその漠然さをそのまま結果として返してくる。
 - **コンパイラ・アプローチ** — リクエストのシグナルをルーティング表の1行にマッピングし、そのパターン1つで、そのまま生成に投入できる完成韓国語プロダクションプロンプトを組み立てる。キットが教える文法（Scene / Camera / Lighting / Color grading / Texture、HEX 固定パレット、末尾の `AR` トークン1つ）は言語非依存で、日本語・英語プロンプトにもそのまま持ち込める。
 - **検証器ゲート** — ホワイトリスト外のネガティブ・SD 廃止語彙・サイズロック違反は、生成へ進む前に `error` として捕まる。
-- **生成はスコープ外** — 大量生成は [codex-fleet](https://github.com/kimsh-1/codex-fleet) の `codex-imagegen` スキル、1枚だけなら `codex` に直接投入する。
+- **生成はスコープ外** — 大量生成は [codex-fleet](https://github.com/gongnyang/codex-fleet) の `codex-imagegen` スキル、1枚だけなら `codex` に直接投入する。
 
 ## 違いはプロンプトだけ
 
@@ -53,7 +53,7 @@ AR 16:9
 ## Quickstart
 
 ```bash
-git clone https://github.com/kimsh-1/gongnyang-prompt-kit
+git clone https://github.com/gongnyang/gongnyang-prompt-kit
 ln -s "$PWD/gongnyang-prompt-kit/skills/image-prompt" ~/.claude/skills/image-prompt
 ```
 
@@ -125,7 +125,7 @@ v3 のコアはルーティング表ひとつだ — リクエストのシグナ
 | **オクルージョン × 影の叙事（家）** | **マスキング × タイポ環境（嵐）** | **L9 影の叙事（フィルムカメラ）** |
 | ![オクルージョン × 影の叙事 — 家](docs/showcase/PR07.webp) | ![マスキング × タイポ環境 — 嵐](docs/showcase/PR08.webp) | ![L9 影の叙事 — フィルムカメラ](docs/showcase/HD01.webp) |
 
-ギャラリー全体（ビフォー/アフター比較 21ペア・TP 14種・P 12カット・L9 12カット）→ [デモサイト](https://kimsh-1.github.io/gongnyang-prompt-kit) · 高密度図表の代表カットは [`examples/diagram-gallery/`](examples/diagram-gallery/)
+ギャラリー全体（ビフォー/アフター比較 21ペア・TP 14種・P 12カット・L9 12カット）→ [デモサイト](https://gongnyang.github.io/gongnyang-prompt-kit) · 高密度図表の代表カットは [`examples/diagram-gallery/`](examples/diagram-gallery/)
 
 ## 構造・リリース・ライセンス
 
@@ -157,10 +157,10 @@ skills/image-prompt/
 
 </details>
 
-変更履歴・検証実測 → [GitHub Releases](https://github.com/kimsh-1/gongnyang-prompt-kit/releases) · リリースチェックリスト [`RELEASING.md`](RELEASING.md) · ライセンス [MIT](LICENSE)
+変更履歴・検証実測 → [GitHub Releases](https://github.com/gongnyang/gongnyang-prompt-kit/releases) · リリースチェックリスト [`RELEASING.md`](RELEASING.md) · ライセンス [MIT](LICENSE)
 
 ---
 
 <div align="center">
-<sub>🐾 漠然としたひと言 → 完成プロンプト — <a href="https://kimsh-1.github.io/gongnyang-prompt-kit">kimsh-1.github.io/gongnyang-prompt-kit</a></sub>
+<sub>🐾 漠然としたひと言 → 完成プロンプト — <a href="https://gongnyang.github.io/gongnyang-prompt-kit">gongnyang.github.io/gongnyang-prompt-kit</a></sub>
 </div>

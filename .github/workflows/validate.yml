@@ -1,0 +1,63 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 검증기 셀프테스트 (fixtures 회귀)
+        run: node skills/image-prompt/scripts/check_prompt.mjs --test
+
+      - name: 예제 jsonl 검증 (기본 모드)
+        run: |
+          set -e
+          for f in \
+            examples/showcase.jsonl \
+            examples/typo-poster.jsonl \
+            examples/prompts.sample.jsonl \
+            examples/diagram-gallery/dense-16x9/prompts-dense.jsonl \
+            examples/diagram-gallery/infographic/prompts.jsonl
+          do
+            echo "== $f"
+            node skills/image-prompt/scripts/check_prompt.mjs --jsonl "$f" > /dev/null
+          done
+
+      - name: 예제 jsonl 검증 (21:9 codex 실측 기록 — --api 모드)
+        run: |
+          set -e
+          for f in \
+            examples/diagram-gallery/deck-21x9/prompts-deck.jsonl \
+            examples/diagram-gallery/complex-16x9/prompts-complex.jsonl
+          do
+            echo "== $f (--api)"
+            node skills/image-prompt/scripts/check_prompt.mjs --api --jsonl "$f" > /dev/null
+          done
+
+      - name: 예제 txt 검증
+        run: |
+          set -e
+          node skills/image-prompt/scripts/check_prompt.mjs examples/poster.txt > /dev/null
+          node skills/image-prompt/scripts/check_prompt.mjs examples/typography_card.txt > /dev/null
+          node skills/image-prompt/scripts/check_prompt.mjs examples/keyart_16x9.txt > /dev/null
+          node skills/image-prompt/scripts/check_prompt.mjs --tier 2 examples/hwabo_formatB.txt > /dev/null
+          # 불량 샘플은 실패해야 정상
+          ! node skills/image-prompt/scripts/check_prompt.mjs examples/bad_poster.txt > /dev/null
+          ! node skills/image-prompt/scripts/check_prompt.mjs examples/bad_negative_tier.txt > /dev/null
+
+      - name: SKILL.md 참조 경로 실존 체크
+        run: |
+          set -e
+          cd skills/image-prompt
+          for p in $(grep -o 'references/[a-z0-9/-]*\.md\|scripts/[a-z_]*\.mjs' SKILL.md | sort -u); do
+            test -f "$p" || { echo "MISSING: $p"; exit 1; }
+          done
+          echo "all referenced paths exist"

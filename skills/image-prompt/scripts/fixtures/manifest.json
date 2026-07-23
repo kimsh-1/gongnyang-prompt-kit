@@ -164,5 +164,68 @@
     "expect": {
       "ok": true
     }
+  },
+  {
+    "path": "fixtures/bad/tier2_pair.txt",
+    "mode": "text",
+    "flags": ["--tier", "2"],
+    "expect": { "ok": false, "codes": ["E-TIER2-PAIR"] }
+  },
+  {
+    "path": "fixtures/bad/tier2_dup.txt",
+    "mode": "text",
+    "flags": ["--tier", "2"],
+    "expect": { "ok": false, "codes": ["E-TIER2-DUP"] }
+  },
+  {
+    "path": "fixtures/bad/tier2_extra.txt",
+    "mode": "text",
+    "flags": ["--tier", "2"],
+    "expect": { "ok": false, "codes": ["E-TIER2-EXTRA"] }
+  },
+  {
+    "path": "fixtures/bad/tier2_pos.txt",
+    "mode": "text",
+    "flags": ["--tier", "2"],
+    "expect": { "ok": false, "codes": ["E-TIER2-POS"] }
+  },
+  {
+    "path": "fixtures/bad/no_ar_end.txt",
+    "mode": "text",
+    "expect": { "ok": false, "codes": ["E-AR-END"] }
+  },
+  {
+    "path": "fixtures/bad/fmtb_hex.txt",
+    "mode": "text",
+    "expect": { "ok": false, "codes": ["E-FMT-B-HEX"] }
+  },
+  {
+    "path": "fixtures/bad/neg_section.txt",
+    "mode": "text",
+    "expect": { "ok": false, "codes": ["E-NEG-SECTION"] }
+  },
+  {
+    "path": "fixtures/bad/text_quote.txt",
+    "mode": "text",
+    "expect": { "ok": false, "codes": ["E-TEXT-QUOTE"] }
+  },
+  {
+    "path": "fixtures/bad/schema.jsonl",
+    "mode": "jsonl",
+    "expect": {
+      "ok": false,
+      "codes": ["E-REC-CATEGORY", "E-REC-QUALITY", "E-REC-TIER", "E-REC-FORMAT", "E-PATH-ESCAPE", "E-QA-GATE"]
+    }
+  },
+  {
+    "path": "fixtures/bad/empty.jsonl",
+    "mode": "jsonl",
+    "expect": { "ok": false, "codes": ["E-REC-EMPTY"] }
+  },
+  {
+    "path": "fixtures/good/record_21x9.jsonl",
+    "mode": "jsonl",
+    "flags": ["--api"],
+    "expect": { "ok": true }
   }
 ]

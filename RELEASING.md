@@ -10,7 +10,9 @@
 - [ ] **4. README 3종** — `README.md` · `README.en.md` · `README.ja.md`의 구조 설명·버전 표기·SKILL.md 인용부를 동기화한다.
 - [ ] **5. 설치본 동기화** — `~/.claude/skills/image-prompt`에 레포 내용을 반영한다.
   ```bash
-  rsync -av --delete /mnt/d/gongnyang-prompt-kit/skills/image-prompt/ ~/.claude/skills/image-prompt/
+  # 레포 루트에서 실행 (심볼릭 링크 설치라면 이 단계 불필요)
+  # --exclude='*.local.md': 설치본에만 존재하는 비공개 로컬 상세판이 --delete에 지워지지 않게 보호
+  rsync -av --delete --exclude='*.local.md' "$(pwd)/skills/image-prompt/" ~/.claude/skills/image-prompt/
   ```
 - [ ] **6. 검증기 통과** — 테스트가 전부 PASS인지 확인한다.
   ```bash
